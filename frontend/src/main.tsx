@@ -7,12 +7,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 function Header() {
   return(
     <>
-    
-    
+
     <header>
-      <img src="/assets/images/logo.png" />
-      <span>Astral Team</span>
+      <div className='logo-container'>
+        <img src="/assets/images/logo.png" />
+        <span>Astral Team</span>
+      </div>
+
     </header>
+
     </>
   )
 }
