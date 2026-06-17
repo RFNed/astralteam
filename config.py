@@ -7,6 +7,6 @@ class Config:
     def __init__(self):
         self.frontend_url = getenv("WEBSITE_URL")
         self.is_debug = getenv("IS_DEBUG", "False")
-        self.github = getenv("GITHUB_LINK", "https://github.com")
+        self.github = getenv("GITHUB_URL", "https://github.com")
 
 config = Config()
