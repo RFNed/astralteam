@@ -9,5 +9,5 @@ app.add_middleware(CORSMiddleware, allow_origins=[f'{config.frontend_url}'])
 
 @app.get("/socials")
 async def socials_get():
-    return {"github": config.github, "ts": config.teamspeak}
+    return {"github": config.github, "ts": config.teamspeak, "matrix": config.matrix, "discord": config.discord}
 
