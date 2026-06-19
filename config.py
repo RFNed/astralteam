@@ -8,5 +8,6 @@ class Config:
         self.frontend_url = getenv("WEBSITE_URL")
         self.is_debug = getenv("IS_DEBUG", "False")
         self.github = getenv("GITHUB_URL", "https://github.com")
+        self.teamspeak = getenv("TEAMSPEAK_URL", "https://teamspeak.com")
 
 config = Config()
