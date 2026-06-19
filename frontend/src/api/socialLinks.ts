@@ -1,6 +1,8 @@
 type Socials = {
     github: string,
-    ts: string
+    ts: string,
+    discord: string,
+    matrix: string
 }
 
 export async function socialLinks(): Promise<Socials>
@@ -13,6 +15,8 @@ export async function socialLinks(): Promise<Socials>
 
     return {
         github: data.github,
-        ts: data.ts
+        ts: data.ts,
+        discord: data.discord,
+        matrix: data.matrix
     }
 }

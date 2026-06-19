@@ -9,5 +9,7 @@ class Config:
         self.is_debug = getenv("IS_DEBUG", "False")
         self.github = getenv("GITHUB_URL", "https://github.com")
         self.teamspeak = getenv("TEAMSPEAK_URL", "https://teamspeak.com")
+        self.discord = getenv("DISCORD_URL", "https://discord.com")
+        self.matrix = getenv("MATRIX_URL", "https://matrix.org")
 
 config = Config()
