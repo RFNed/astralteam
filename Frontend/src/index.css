@@ -1,0 +1,95 @@
+body {
+    background-color: rgb(15, 15, 15);
+    color: white;
+    margin: 0;
+}
+
+.head-bar {
+    width: 95%;
+    height: 95px;
+    margin: 0 auto;
+
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(65, 65, 65, 0.479);
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+
+.head-bar a {
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-decoration: none;
+}
+
+.head-bar img {
+    height: 115px;
+    display: block;
+
+    transition: transform .1s ease, filter .1s ease;
+}
+
+.head-bar img:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(4px 4px 20px rgba(0, 0, 0, .5));
+}
+
+.head-bar img:active {
+    transform: scale(.95);
+    filter: drop-shadow(4px 4px 25px rgba(255,255,255,.4));
+}
+
+.catalogue {
+    display: flex;
+    gap: 30px;
+}
+
+.catalogue span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 30px;
+    height: 50px;
+
+    background: linear-gradient(
+        90deg,
+        rgb(255,255,255),
+        rgb(211,211,211)
+    );
+
+    color: #111;
+    font-weight: 600;
+    border-radius: 14px;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.35),
+        inset 0 1px 1px rgba(255,255,255,.7);
+
+    cursor: pointer;
+    transition: transform .1s ease;
+}
+
+.catalogue span:hover {
+    transform: translateY(-2px);
+}
+
+.catalogue span:active {
+    transform: scale(.95);
+}
+
+
+.user-circle {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+}
