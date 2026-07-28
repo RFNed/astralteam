@@ -9,7 +9,7 @@ function Head() {
     <>
     
     <div className='head-bar'>
-      <Link to="/" style={{"textDecoration": "none"}}><img src="/logo.png"/></Link>
+      <Link to="/" style={{"textDecoration": "none"}}><img src="/logos/logo.png"/></Link>
       <div className='catalogue'>
         <span>КАТАЛОГ</span>
         <span>НОВОСТИ</span>
