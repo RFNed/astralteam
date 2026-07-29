@@ -12,6 +12,13 @@ export default function Main() {
                     <img src="/icons/os/windows.svg" /> <b>Windows x64</b>
                 </div>
             </div>
+
+            <div className="astral-info">
+                <div className="astral-info-item">
+                    123213123
+                </div>
+            </div>
+
         </div>
         
         </>
