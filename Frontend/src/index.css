@@ -1,3 +1,11 @@
+@font-face {
+    font-family: Kanit-Black;
+    src: url("/fonts/Kanit/Kanit-Black.ttf");
+}
+@font-face {
+    font-family: Kanit-Bold;
+    src: url("/fonts/Kanit/Kanit-Bold.ttf");
+}
 body {
     background-color: rgb(15, 15, 15);
     color: white;

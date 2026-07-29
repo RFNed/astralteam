@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import "./main.css"
 export default function Main() {
     return (
@@ -10,7 +9,7 @@ export default function Main() {
                 <span id="astralcat-title">ASTRAL LAUNCHER</span>
                 <span id="astralcat-subtitle">ИГРОВОЙ ЛАУНЧЕР</span>
                 <div id="astralcat-download">
-                    СКАЧАТЬ
+                    <img src="/icons/os/windows.svg" /> <b>Windows x64</b>
                 </div>
             </div>
         </div>
