@@ -18,6 +18,12 @@ export default function Main() {
                     <div className="astral-info-item-avatar"> 
                         
                     </div>
+                    Удобный интерфейс
+                </div>
+                <div className="astral-info-item">
+                    <div className="astral-info-item-avatar"> 
+                        
+                    </div>
                     123
                 </div>
             </div>

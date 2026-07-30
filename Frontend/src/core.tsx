@@ -8,18 +8,22 @@ function Head() {
   return (
     <>
     
-    <div className='head-bar'>
-      <Link to="/" style={{"textDecoration": "none"}}><img src="/logos/logo.png"/></Link>
-      <div className='catalogue'>
-        <span>ИГРЫ</span>
-        <span>НОВОСТИ</span>
-        <span>СООБЩЕСТВО</span>
-        <span>WIKI</span>
+      <div className="head-bar">
+          <Link className="logo" to="/">
+              <img src="/logos/logo.png" alt="Logo" />
+          </Link>
+
+          <div className="catalogue">
+              <Link to="/games"><span>ИГРЫ</span></Link>
+              <span>НОВОСТИ</span>
+              <span>СООБЩЕСТВО</span>
+              <span>WIKI</span>
+          </div>
+
+          <div className="user-circle">
+              Регистрация
+          </div>
       </div>
-      <div className='user-circle'>
-        Регистрация
-      </div>
-    </div>
     
     </>
   )
@@ -30,6 +34,7 @@ function Pages() {
   return (
     <Routes location={location}>
       <Route path="/" element={<Main />} />
+      <Route path="/games" element={<>(123)</>} />
     </Routes>
   )
 }
