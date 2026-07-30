@@ -24,6 +24,7 @@
         font-family: Kanit-Bold;
     }
     & #astralcat-subtitle {
+        margin-top: 10px;
         font-family: Schulevetica;
         font-weight: lighter;
         grid-row: 5;

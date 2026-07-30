@@ -79,13 +79,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
     height: 50px;
     padding: 0 30px;
-
     color: #111;
     font-weight: 600;
-
     background: linear-gradient(
         90deg,
         white,
@@ -93,7 +90,6 @@ body {
     );
 
     border-radius: 14px;
-
     box-shadow:
         0 8px 20px rgba(0,0,0,.35),
         inset 0 1px 1px rgba(255,255,255,.7);
@@ -116,4 +112,29 @@ body {
     right: 30px;
     top: 50%;
     transform: translateY(-50%);
+    transition: transform 100ms ease;
+    &:hover {
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    &:active {
+        transform: translateY(-50%) scale(0.9);
+    }
+}
+.non-registered {
+
+    background: linear-gradient(
+        90deg,
+        white,
+        rgb(211,211,211)
+    );
+    height: 50px;
+    width: 150px;
+    border-radius: 10px;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    font-weight: 600;
+    justify-content: center;
+    color: #111;
 }

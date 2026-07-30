@@ -3,11 +3,13 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
 import './index.css'
 import Main from './Main/main'
-
+import Game from './Games/games'
+import Community from './Community/community'
+import News from './News/news'
 function Head() {
   return (
     <>
-    
+
       <div className="head-bar">
           <Link className="logo" to="/">
               <img src="/logos/logo.png" alt="Logo" />
@@ -15,16 +17,18 @@ function Head() {
 
           <div className="catalogue">
               <Link to="/games"><span>ИГРЫ</span></Link>
-              <span>НОВОСТИ</span>
-              <span>СООБЩЕСТВО</span>
-              <span>WIKI</span>
+              <Link to="/news"><span>НОВОСТИ</span></Link>
+              <Link to="/community"><span>СООБЩЕСТВО</span></Link>
+              <Link to="/wiki"><span>WIKI</span></Link>
           </div>
 
           <div className="user-circle">
-              Регистрация
+            <div className="non-registered">
+              АККАУНТ
+            </div>
           </div>
       </div>
-    
+
     </>
   )
 }
@@ -34,7 +38,10 @@ function Pages() {
   return (
     <Routes location={location}>
       <Route path="/" element={<Main />} />
-      <Route path="/games" element={<>(123)</>} />
+      <Route path="/games" element={<Game />} />
+      <Route path="/news" element={<News />} />
+      <Route path="/community" element={<Community />} />
+      <Route path="/wiki" element={<>Wiki</>} />
     </Routes>
   )
 }
