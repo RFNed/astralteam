@@ -15,7 +15,10 @@ export default function Main() {
 
             <div className="astral-info">
                 <div className="astral-info-item">
-                    123213123
+                    <div className="astral-info-item-avatar"> 
+                        
+                    </div>
+                    123
                 </div>
             </div>
 

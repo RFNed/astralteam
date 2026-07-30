@@ -11,9 +11,9 @@ function Head() {
     <div className='head-bar'>
       <Link to="/" style={{"textDecoration": "none"}}><img src="/logos/logo.png"/></Link>
       <div className='catalogue'>
-        <span>КАТАЛОГ</span>
+        <span>ИГРЫ</span>
         <span>НОВОСТИ</span>
-        <span>О НАС</span>
+        <span>СООБЩЕСТВО</span>
         <span>WIKI</span>
       </div>
       <div className='user-circle'>
