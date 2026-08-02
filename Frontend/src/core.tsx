@@ -16,10 +16,11 @@ function Head() {
           </Link>
 
           <div className="catalogue">
+              <Link to="/"><span>ЛАУНЧЕР</span></Link>
               <Link to="/games"><span>ИГРЫ</span></Link>
               <Link to="/news"><span>НОВОСТИ</span></Link>
               <Link to="/community"><span>СООБЩЕСТВО</span></Link>
-              <Link to="/wiki"><span>WIKI</span></Link>
+              <a href={import.meta.env.VITE_WIKI_URL} target='_blank' rel="noopener noreferrer"><span>WIKI</span></a>
           </div>
 
           <div className="user-circle">
@@ -41,7 +42,6 @@ function Pages() {
       <Route path="/games" element={<Game />} />
       <Route path="/news" element={<News />} />
       <Route path="/community" element={<Community />} />
-      <Route path="/wiki" element={<>Wiki</>} />
     </Routes>
   )
 }

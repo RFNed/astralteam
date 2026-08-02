@@ -21,3 +21,4 @@ Frontend/*.local
 **/*.njsproj
 **/*.sln
 *.sw?
+Frontend/.env
