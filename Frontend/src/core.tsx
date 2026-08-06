@@ -1,11 +1,13 @@
+import './index.css'
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
-import './index.css'
 import Main from './Main/main'
 import Game from './Games/games'
 import Community from './Community/community'
 import News from './News/news'
+
 function Head() {
   return (
     <>
@@ -45,7 +47,7 @@ function Pages() {
   )
 }
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById('core')!).render(
   <StrictMode>
     <BrowserRouter>
       <Head />

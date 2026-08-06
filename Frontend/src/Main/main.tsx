@@ -14,17 +14,27 @@ export default function Main() {
             </div>
 
             <div className="astral-info">
+                <div className="astral-info-title">
+                    <span>Преимущества</span>
+                </div>
                 <div className="astral-info-item">
                     <div className="astral-info-item-avatar"> 
                         
                     </div>
                     Удобный интерфейс
                 </div>
+
                 <div className="astral-info-item">
                     <div className="astral-info-item-avatar"> 
                         
                     </div>
-                    123
+                    Отзывчивая служба поддержки
+                </div>
+                <div className="astral-info-item">
+                    <div className="astral-info-item-avatar"> 
+                        
+                    </div>
+                    Возврат средств если не понравилась игра
                 </div>
             </div>
 
