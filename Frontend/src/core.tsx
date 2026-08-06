@@ -20,7 +20,6 @@ function Head() {
               <Link to="/games"><span>ИГРЫ</span></Link>
               <Link to="/news"><span>НОВОСТИ</span></Link>
               <Link to="/community"><span>СООБЩЕСТВО</span></Link>
-              <a href={import.meta.env.VITE_WIKI_URL} target='_blank' rel="noopener noreferrer"><span>WIKI</span></a>
           </div>
 
           <div className="user-circle">
