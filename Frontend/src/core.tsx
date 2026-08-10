@@ -7,6 +7,7 @@ import Main from './Main/main'
 import Game from './Games/games'
 import Community from './Community/community'
 import News from './News/news'
+import Auth from './Auth/auth'
 
 function Head() {
   return (
@@ -25,9 +26,7 @@ function Head() {
           </div>
 
           <div className="user-circle">
-            <div className="non-registered">
-              АККАУНТ
-            </div>
+              <Link to="/auth"><div className="non-registered" title="Войти"/></Link>
           </div>
       </div>
 
@@ -43,6 +42,7 @@ function Pages() {
       <Route path="/games" element={<Game />} />
       <Route path="/news" element={<News />} />
       <Route path="/community" element={<Community />} />
+      <Route path="/auth" element={<Auth />} />
     </Routes>
   )
 }
