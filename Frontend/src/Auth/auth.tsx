@@ -4,7 +4,9 @@ export default function Auth() {
     return (
         <>
         
-        123auth
+        <div className="auth">
+            123
+        </div>
         
         </>
     )

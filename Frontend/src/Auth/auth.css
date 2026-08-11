@@ -1,0 +1,11 @@
+.auth {
+    
+    margin-top: 30px;
+    justify-self: center;
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.555);
+    height: 1000px;
+    padding: 20px;
+    border-radius: 32px;
+
+}

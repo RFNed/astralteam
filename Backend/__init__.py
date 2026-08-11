@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from Backend.Modules.Logger import Logger
 
 # Routes
-from Backend.Routes.User.Register import router as register_router
+from Backend.Routes.User import router as register_router
 
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding='utf-8')
@@ -42,16 +42,15 @@ async def lifespan(app: FastAPI):
                 result = await cursor.fetchone()
                 if result is None:
                     raise RuntimeError("Oh-oh, database is not responding correctly.")
+                else:
+                    logger.info("Database connection established successfully.")
 
     except Exception:
         msg = ("Oops, something went wrong while connecting to the database..." if random.random() < 0.2 else "Well, that was toasty... Your DB connection failed. Please check your configuration and try again.")
         logger.fatal(msg)
-
-
         if hasattr(app.state, "db_pool") and app.state.db_pool:
             app.state.db_pool.close()
             await app.state.db_pool.wait_closed()
-
         os._exit(1)
     yield
     if hasattr(app.state, "db_pool") and app.state.db_pool:
