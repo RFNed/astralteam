@@ -21,6 +21,10 @@ export default function Auth() {
                 <input type="password" placeholder="Пароль" maxLength={100} value={password} onChange={(e) => setPassword(e.target.value)}/>
                 <button onClick={handleLogin}>Войти</button>
             </div>
+            <div className="reg-input">
+                <span>Нет аккаунта?</span>
+                <button>Зарегистрироваться</button>
+            </div>
         </div>
         
         </>

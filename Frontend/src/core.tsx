@@ -4,11 +4,13 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
 
-import Main from './Main/main'
-import Game from './Games/games'
-import Community from './Community/community'
-import News from './News/news'
-import Auth from './Auth/auth'
+import Main from './Pages/Main/main'
+import Game from './Pages/Games/games'
+import Community from './Pages/Community/community'
+import News from './Pages/News/news'
+import Auth from './Pages/Auth/auth'
+
+import AuthProvider from './Contexts/authContext.tsx'
 
 function Head() {
   return (
@@ -50,9 +52,11 @@ function Pages() {
 
 createRoot(document.getElementById('core')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Head />
-      <Pages />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Head />
+        <Pages />
+      </BrowserRouter>
+    </AuthProvider>
   </StrictMode>,
 )

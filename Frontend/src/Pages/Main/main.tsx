@@ -1,8 +1,14 @@
 import "./main.css"
+
+import { AuthContext, useAuth }  from "../../Contexts/authContext.tsx"
+import { useContext } from "react"
+
 export default function Main() {
+    // const { nickname, setNickname } = useAuth()
+    
     return (
         <>
-        
+
         <div className="astral-main">
             <div className="astral-body">
                 <img src="/pics/astralcat.png" id="astralcat-img" />
