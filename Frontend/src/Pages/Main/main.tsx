@@ -32,7 +32,7 @@ export default function Main() {
                 </div>
                 <div className="astral-info-item">
                     <div className="astral-info-item-avatar" />
-                    Возврат средств если не понравилась игра
+                    Возврат средств, если не понравилась игра
                 </div>
             </div>
 

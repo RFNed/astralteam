@@ -9,7 +9,7 @@ import Game from './Pages/Games/games'
 import Community from './Pages/Community/community'
 import News from './Pages/News/news'
 import Auth from './Pages/Auth/auth'
-
+import Reg from './Pages/Auth/Reg/reg.tsx'
 import AuthProvider from './Contexts/authContext.tsx'
 
 function Head() {
@@ -46,6 +46,7 @@ function Pages() {
       <Route path="/news" element={<News />} />
       <Route path="/community" element={<Community />} />
       <Route path="/auth" element={<Auth />} />
+      <Route path="/auth/reg" element={<Reg />} />
     </Routes>
   )
 }
