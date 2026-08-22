@@ -12,15 +12,39 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 
+    & .auth-right-page {
+        grid-row: 1;
+        grid-column: 2;
+        position: relative;
+        & img {
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            position: absolute;
+        }
+        & span {
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            font-family: Unbounded;
+            font-weight: bolder;
+            font-size: 24px;
+            width: 600px;
+            text-align: center;
+            user-select: none;
+        }
+    }
+
     & .reg-input {
         grid-column: 1;
         grid-row: 1;
-
+        user-select: none;
         align-self: self-end;
         font-family: Unbounded;
         font-size: 14px;
         margin-left: 40px;
-
         & button {
             margin-left: 50px;
             margin-bottom: 30px;
@@ -81,14 +105,19 @@
 
         align-self: center;
         justify-self: center;
-
+        margin-bottom: 70px;
+        
         display: flex;
         flex-direction: column;
-
+        width: 300px;
         height: 200px;
-        width: 350px;
         gap: 10px;
-
+        & span {
+            font-size: 18px;
+            font-family: Unbounded;
+            text-align: center;
+            margin-bottom: 4px;
+        }
         & input {
             height: 40px;
 

@@ -1,7 +1,5 @@
 import "./main.css"
 
-import { AuthContext, useAuth }  from "../../Contexts/authContext.tsx"
-import { useContext } from "react"
 
 export default function Main() {
     // const { nickname, setNickname } = useAuth()
@@ -24,22 +22,16 @@ export default function Main() {
                     <span>Преимущества</span>
                 </div>
                 <div className="astral-info-item">
-                    <div className="astral-info-item-avatar"> 
-                        
-                    </div>
+                    <div className="astral-info-item-avatar" /> 
                     Удобный интерфейс
                 </div>
 
                 <div className="astral-info-item">
-                    <div className="astral-info-item-avatar"> 
-                        
-                    </div>
+                    <div className="astral-info-item-avatar" /> 
                     Отзывчивая служба поддержки
                 </div>
                 <div className="astral-info-item">
-                    <div className="astral-info-item-avatar"> 
-                        
-                    </div>
+                    <div className="astral-info-item-avatar" />
                     Возврат средств если не понравилась игра
                 </div>
             </div>
