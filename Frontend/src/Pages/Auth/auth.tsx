@@ -1,5 +1,8 @@
-import { useState } from "react";
 import "./auth.css"
+
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 
 export default function Auth() {
     const [login, setLogin] = useState<string>("");
@@ -24,6 +27,9 @@ export default function Auth() {
 
     return (
         <>
+        <Helmet>
+            <title>Вход</title>
+        </Helmet>
         
         <div className="auth">
             <div className="auth-input">
@@ -41,7 +47,7 @@ export default function Auth() {
 
             <div className="reg-input">
                 <span>Нет аккаунта?</span>
-                <button>Зарегистрироваться</button>
+                <Link to="/auth/reg"><button>Зарегистрироваться</button></Link>
             </div>
 
             <div className="auth-right-page">

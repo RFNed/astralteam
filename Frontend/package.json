@@ -1,7 +1,7 @@
 {
   "name": "astral",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.5.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "motion": "^13.1.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.18.1"
   },
   "devDependencies": {

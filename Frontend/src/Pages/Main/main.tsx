@@ -6,7 +6,7 @@ export default function Main() {
     
     return (
         <>
-
+        
         <div className="astral-main">
             <div className="astral-body">
                 <img src="/pics/astralcat.png" id="astralcat-img" />
