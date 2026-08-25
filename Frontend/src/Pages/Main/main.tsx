@@ -3,7 +3,11 @@ import "./main.css"
 
 export default function Main() {
     // const { nickname, setNickname } = useAuth()
-    
+
+    const downloadLauncher = () => {
+        window.location.href = `${import.meta.env.VITE_API_URL}/download/installer/astralinstaller.exe`
+    }
+
     return (
         <>
         
@@ -12,7 +16,7 @@ export default function Main() {
                 <img src="/pics/astralcat.png" id="astralcat-img" />
                 <span id="astralcat-title">ASTRAL LAUNCHER</span>
                 <span id="astralcat-subtitle">ИГРОВОЙ ЛАУНЧЕР</span>
-                <div id="astralcat-download">
+                <div id="astralcat-download" onClick={downloadLauncher}>
                     <img src="/icons/os/windows.svg" /> <b>Windows x64</b>
                 </div>
             </div>

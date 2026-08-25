@@ -1,83 +1,91 @@
 .reg-box {
     margin-top: 60px;
     width: 1000px;
-    height: 330px;
-    background-color: rgba(0, 0, 0, 0.236);
+    height: 400px;
+    background-color: rgba(0, 0, 0, 0.281);
     border-radius: 45px;
     justify-self: center;
-    padding: 30px;
-    gap: 60px;
-    display: flex;
-    flex-direction: column;
-    
-    align-items: center;
-    & a {
-        text-decoration: none;
+    padding: 100px;
+    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+
+    & .reg-icon {
+        display: grid;
+        grid-column: 2;
+        width: 160px;
+        justify-self: center;
+        align-self: center;
     }
     & .reg-title {
-        font-size: 34px;
         font-family: Unbounded;
-        display: flex;
-        justify-self: center;
+        font-size: 39px;
+        margin-left: 60px;
         user-select: none;
-        position: relative;
+        grid-column: 1;
+        grid-row: 1;
     }
 
-    & .reg-description {
-        font-size: 13px;
-        font-family: Unbounded;
-        opacity: 0.4;
-        position: absolute;
-        top: 130%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    & .reg-back {
-        color: white;
-        position: relative;
-        width: 250px;
-        height: 20px;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid white;
-        border-radius: 20px;
-        isolation: isolate;
-        text-align: center;
-        overflow: hidden;
-        transition: transform 200ms ease;
-        &::before {
-            content: "";
-            z-index: -1;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background-color: white;
-            height: 100%;
-            width: 0px;
-            transition: width 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
-        }
-        &:hover {
-            transform: scale(1.05);
-            color: black;
-        }
-        &:active {
-            transform: scale(0.95);
-        }
-        &:hover::before {
-            width: 100%;
-        }
-        &.download::before {
-            background-color: rgb(62, 18, 99);
-        }
-        &.download {
-            scale: 1.1;
-            border: 2px solid rgb(62, 18, 99);
-        }
-        &.download:hover {
+    & .reg-form {
+        margin-top: 90px;
+        margin-left: 40px;
+        height: 200px;
+        width: 300px;
+        gap: 10px;
+        display: grid;
+        grid-column: 1;
+        grid-row: 1;
+        flex-direction: column;
+        & button {
+            margin-top: 10px;
+            height: 60px;
+            background-color: transparent;
+            border: 2px solid white;
             color: white;
+            font-family: Unbounded;
+            border-radius: 24px;
+            position: relative;
+            inset: 0;
+            overflow: hidden;
+            isolation: isolate;
+            transition: transform 400ms cubic-bezier(0.075, 0.82, 0.165, 1), border 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 200ms cubic-bezier(0.19, 1, 0.22, 1);
+            filter: drop-shadow(0px 0px 0px rgb(0, 197, 0));
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: white;
+                transition: width 400ms cubic-bezier(0.075, 0.82, 0.165, 1), background-color 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                width: 0;
+                height: 100%;
+                z-index: -1;
+            }
+            &:hover::before {
+                width: 100%;
+            }
+            &:hover {
+                color: #202020;
+                cursor: pointer;
+                transform: scale(1.02);
+            }
+            &:active {
+                color: white;
+                font-weight: bolder;
+                border: 2px solid rgb(0, 197, 0);
+                filter: drop-shadow(0px 0px 10px rgb(0, 197, 0));
+                transform: scale(0.95);
+            }
+            &:active::before {
+                background-color: rgb(0, 197, 0);
+            }
         }
     }
+
+    & input {
+        height: 40px;
+        border-radius: 8px;
+        border: none;
+        padding: 0 10px;
+    }
+
 }

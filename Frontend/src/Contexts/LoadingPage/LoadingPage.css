@@ -1,0 +1,77 @@
+.loading-page {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    font-family: Unbounded;
+    font-size: 36px;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 700ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        visibility 0s linear 700ms,
+        filter 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
+    user-select: none;
+    filter: blur(50px);
+    & .loading-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 100px;
+        & img {
+            width: 550px;
+        }
+
+        & .loading-dots {
+            display: flex;
+            gap: 48px;
+
+            & span {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: white;
+                animation: loading-dot 1.0s infinite cubic-bezier(0.075, 0.82, 0.165, 1);
+            }
+
+            & span:nth-child(1) {
+                animation-delay: 0s;
+            }
+
+            & span:nth-child(2) {
+                animation-delay: 0.15s;
+            }
+
+            & span:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+        }
+    }
+
+    &.visible {
+        opacity: 1.0;
+        visibility: visible;
+        transition:
+            opacity 700ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+            visibility 0s,
+            filter 450ms cubic-bezier(0.075, 0.82, 0.165, 1);
+        filter: blur(0px);
+    }
+}
+
+@keyframes loading-dot {
+    0%, 60%, 100% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(1.8);
+    }
+    
+}

@@ -11,6 +11,7 @@
 @font-face {
     font-family: Unbounded;
     src: url("/fonts/Unbounded/Unbounded-Light.ttf");
+    font-display: swap;
 }
 
 @font-face {
@@ -47,9 +48,7 @@ body {
     border-bottom-left-radius: 40px;
     border-bottom-right-radius: 40px;
     user-select: none;
-
     transition: transform 300ms ease;
-
     &.hidden {
         transform: translateY(-100%);
     }

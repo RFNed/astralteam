@@ -1,16 +1,35 @@
 import './index.css'
+
+/* Important Imports */
+
 import { AnimatePresence, motion } from 'motion/react'
 import { StrictMode, useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
 import { HelmetProvider, Helmet } from 'react-helmet-async';
+
+/* Pages */
+
 import Main from './Pages/Main/main'
 import Game from './Pages/Games/games'
 import Community from './Pages/Community/community'
 import News from './Pages/News/news'
 import Auth from './Pages/Auth/auth'
 import Reg from './Pages/Auth/Reg/reg.tsx'
+
+/* Special Page */
+
+
+import LoadingPage from './Contexts/LoadingPage/LoadingPage.tsx'
+
+
+/* Providers */
+
 import AuthProvider from './Contexts/authContext.tsx'
+import LoadProvider from './Contexts/loadContext.tsx'
+
+/* ------------------------------------------------------- */
+
 
 function Head() {
   const [HiddenHeadBar, setHiddenHeadBar] = useState<boolean>(false);
@@ -89,13 +108,15 @@ function Pages() {
 
 createRoot(document.getElementById('core')!).render(
   <StrictMode>
-    <AuthProvider>
-      <HelmetProvider>
-        <BrowserRouter>
-          <Head />
-          <Pages />
-        </BrowserRouter>
-      </HelmetProvider>
-    </AuthProvider>
+    <LoadProvider>
+      <AuthProvider>
+        <HelmetProvider>
+          <BrowserRouter>
+            <Head />
+            <Pages />
+          </BrowserRouter>
+        </HelmetProvider>
+      </AuthProvider>
+    </LoadProvider>
   </StrictMode>,
 )

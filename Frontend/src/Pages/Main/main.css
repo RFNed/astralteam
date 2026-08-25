@@ -43,6 +43,7 @@
         height: 60px;
         grid-column: 9 / 11;
         transition: transform 50ms ease;
+        position: relative;
         & img {
             width: 30px;
             margin-right: 23px;
