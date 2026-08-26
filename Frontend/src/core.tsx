@@ -17,12 +17,6 @@ import News from './Pages/News/news'
 import Auth from './Pages/Auth/auth'
 import Reg from './Pages/Auth/Reg/reg.tsx'
 
-/* Special Page */
-
-
-import LoadingPage from './Contexts/LoadingPage/LoadingPage.tsx'
-
-
 /* Providers */
 
 import AuthProvider from './Contexts/authContext.tsx'
