@@ -3,6 +3,7 @@ import sys
 import random
 from fastapi import Depends, HTTPException, FastAPI
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from Backend.Modules.Logger import Logger
@@ -14,12 +15,18 @@ if sys.platform == "win32":
     sys.stdout.reconfigure(encoding='utf-8')
     sys.stderr.reconfigure(encoding='utf-8')
 
-is_debug = os.getenv("DEBUG") == "True"
-
 logger = Logger("Backend")
 
 load_dotenv()
 
+is_debug = os.getenv("DEBUG") == "True"
+
+CORS_ORIGINS = [
+    origin.strip()
+    for origin in list(str(os.getenv("CORS_ORIGINS")).split(","))
+]
+
+print(CORS_ORIGINS)
 
 DB_CONFIG = {
     "host": os.getenv("MYSQL_HOST"),
@@ -60,6 +67,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan, debug=is_debug, title="Backend Astral API", description="Backend API for Astral application", version="0.1.0", docs_url="/docs" if os.getenv("DEBUG") == "True" else None, redoc_url=None)
+app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 app.mount("/download/installer", StaticFiles(directory="Backend/Download/Installer"), name="download_dir")
 app.mount("/resource", StaticFiles(directory="Backend/Resource"), name="resource_dir")
 app.include_router(register_router)

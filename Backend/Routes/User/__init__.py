@@ -14,15 +14,21 @@ class RegisterUserRequest(BaseModel):
 
 @router.post("/register")
 async def register_user(request: RegisterUserRequest, db = Depends(get_db)):
+
     if request.username == "" or request.email == "" or request.password == "":
-        raise HTTPException(status_code=400, detail="Username, email, and password are required.")
+        raise HTTPException(status_code=400, detail="Username, email, and password are required")
+    
     try:
         validate_email(request.email)
     except:
         raise HTTPException(status_code=400, detail=f"Invalid email")
+    
     await db.execute(User.CHECK_ACCOUNT_EXISTS_QUERY, (request.username, request.email))
     result = await db.fetchone()
+
     if result:
-        raise HTTPException(status_code=400, detail="Username or email already exists.")
+        raise HTTPException(status_code=400, detail="Username or email already exists")
+    
     await db.execute(User.REGISTER_QUERY, (request.username, request.email, request.password))
+
     return {"detail": "registered successfully"}
