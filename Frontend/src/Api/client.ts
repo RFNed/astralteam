@@ -1,3 +1,4 @@
+import { APIError } from "./class/APIError"
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -20,7 +21,11 @@ export async function register(data: RegisterInterface)
     if (!response.ok)
     {
         const message = await response.json()
-        throw new Error(`${message.detail}`)
+        console.log(message.status)
+        throw new APIError(
+            message.detail.code,
+            response.status
+        )
     }
 
     return response.json()

@@ -1,5 +1,5 @@
 from fastapi.routing import APIRouter
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException, Depends, status
 from pydantic import BaseModel
 from email_validator import validate_email
 from Backend.Modules.Database.Query.User import User
@@ -16,19 +16,19 @@ class RegisterUserRequest(BaseModel):
 async def register_user(request: RegisterUserRequest, db = Depends(get_db)):
 
     if request.username == "" or request.email == "" or request.password == "":
-        raise HTTPException(status_code=400, detail="Username, email, and password are required")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"code": "REGDATA_REQUIRED", "message": "Data requried for registration"})
     
     try:
         validate_email(request.email)
     except:
-        raise HTTPException(status_code=400, detail=f"Invalid email")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"code": "INVALID_EMAIL", "message": "Invalid email"})
     
     await db.execute(User.CHECK_ACCOUNT_EXISTS_QUERY, (request.username, request.email))
     result = await db.fetchone()
 
     if result:
-        raise HTTPException(status_code=400, detail="Username or email already exists")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"code": "USERNAME_TAKEN", "message": "Invalid email"})
     
     await db.execute(User.REGISTER_QUERY, (request.username, request.email, request.password))
 
-    return {"detail": "registered successfully"}
+    return {"detail": {"code": "SUCCESS", "message": "Registartion is success"}}
