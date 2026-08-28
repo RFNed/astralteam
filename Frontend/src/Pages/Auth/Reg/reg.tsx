@@ -1,9 +1,11 @@
 import "./reg.css"
 
+import { Helmet } from "react-helmet-async";
+import { useState } from "react"
+
 import { register } from "../../../Api/client";
 import { useLoaded } from "../../../Contexts/loadContext";
-import { useState } from "react"
-import { sleep } from "../../../Modules/other";
+import { sleep, IS_DEBUG } from "../../../Modules/other";
 import { APIError } from "../../../Api/class/APIError";
 
 const ERROR_MESSAGES: Record<string, string> = {
@@ -25,29 +27,28 @@ export default function Reg() {
     const [IsNotifyError, setIsNotifyError] = useState<boolean>(false); 
 
     const handle_data = () => {
-        if (Email.trim() || Username.trim() || Password.trim())
-        {
+        if (Email.trim() && Username.trim() && Password.trim())
             return true
-        }
-        else {
+        else
             return false
-        }
     }
 
     const handle_reg = async () => {
         if (!IsLoadedScreen)
         {
-            if (Email.trim() || Username.trim() || Password.trim())
+            if (Email.trim() && Username.trim() && Password.trim())
             {
                 if (TwoPassword === Password)
                 {
 
                     SetIsLoadedScreen(true)
-                    await sleep(300)
+                    {await sleep(500)}
                     try {
                         const result = await register({ email: Email, username: Username, password: Password })
                         if (result.detail.code === "SUCCESS")
                         {
+                            if (IS_DEBUG)
+                                await sleep(1500)
                             setNotifyBoxText("Успешно")
                             setIsNotifyError(false)
                             setVisibleBoxText(true)
@@ -89,6 +90,9 @@ export default function Reg() {
     }
     return (
         <>
+        <Helmet>
+            <title>Регистрация</title>
+        </Helmet>
         
         <div className="reg-box">
             <span className="reg-title">Регистрация</span>
