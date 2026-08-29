@@ -21,6 +21,7 @@ import Reg from './Pages/Auth/Reg/reg.tsx'
 
 import AuthProvider from './Contexts/authContext.tsx'
 import LoadProvider from './Contexts/loadContext.tsx'
+import RegEmailNotify from './Pages/Auth/Reg/Email/regemailnotify.tsx';
 
 /* ------------------------------------------------------- */
 
@@ -93,7 +94,8 @@ function Pages() {
           <Route path="/news" element={<News />} />
           <Route path="/community" element={<Community />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/auth/reg" element={<Reg />} />
+          <Route path="/registartion" element={<Reg />} />
+          <Route path="/registartion/mail" element={<RegEmailNotify />} />
         </Routes>
       </motion.div>
     </AnimatePresence>

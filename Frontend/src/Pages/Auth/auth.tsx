@@ -47,7 +47,7 @@ export default function Auth() {
 
             <div className="auth-reg-input">
                 <span>Нет аккаунта?</span>
-                <Link to="/auth/reg"><button>Зарегистрироваться</button></Link>
+                <Link to="/registartion"><button>Зарегистрироваться</button></Link>
             </div>
 
             <div className="auth-right-page">

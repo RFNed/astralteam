@@ -17,6 +17,12 @@ async def register_user(request: RegisterUserRequest, db = Depends(get_db)):
 
     if request.username == "" or request.email == "" or request.password == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"code": "REGDATA_REQUIRED", "message": "Data requried for registration"})
+
+    if not(len(request.username) > 6):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"code": "INCORRECT_USERNAME_LENGTH", "message": "Username must be more 6 characters"})
+
+    if not(len(request.password) > 6):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"code": "INCORRECT_PASSWORD_LENGTH", "message": "Password must be more 6 characters"})
     
     try:
         validate_email(request.email)
