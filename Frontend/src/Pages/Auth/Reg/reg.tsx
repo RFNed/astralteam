@@ -7,6 +7,7 @@ import { register } from "../../../Api/client";
 import { useLoaded } from "../../../Contexts/loadContext";
 import { sleep, IS_DEBUG } from "../../../Modules/other";
 import { APIError } from "../../../Api/class/APIError";
+import { useNavigate, Navigate } from "react-router-dom";
 
 const ERROR_MESSAGES: Record<string, string> = {
     INVALID_EMAIL: "Электронная почта не валидна, или занята",
@@ -22,7 +23,8 @@ const PASSWORD_LEVELS = [
 
 export default function Reg() {
     const { IsLoadedScreen, SetIsLoadedScreen } = useLoaded()
-    
+    const navigate = useNavigate()
+
     const [Email, SetEmail] = useState<string>("")
     const [Username, SetUsername] = useState<string>("")
     const [Password, SetPassword] = useState<string>("")
@@ -121,6 +123,8 @@ export default function Reg() {
                 if (IS_DEBUG)
                     await sleep(1500)
                 ShowNotifyBox("Успешно", false)
+                navigate("/registration/mail")
+                
             }
         } catch (error)
         {

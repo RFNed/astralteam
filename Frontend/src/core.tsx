@@ -94,8 +94,8 @@ function Pages() {
           <Route path="/news" element={<News />} />
           <Route path="/community" element={<Community />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/registartion" element={<Reg />} />
-          <Route path="/registartion/mail" element={<RegEmailNotify />} />
+          <Route path="/registration" element={<Reg />} />
+          <Route path="/registration/mail" element={<RegEmailNotify />} />
         </Routes>
       </motion.div>
     </AnimatePresence>
