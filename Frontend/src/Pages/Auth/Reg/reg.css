@@ -12,14 +12,15 @@
     & .reg-icon {
         display: grid;
         grid-column: 2;
-        width: 160px;
+        width: 180px;
         justify-self: center;
         align-self: center;
+        -webkit-user-drag: none;
     }
     & .reg-title {
         font-family: Unbounded;
-        font-size: 39px;
-        margin-left: 60px;
+        font-size: 24px;
+        justify-self: center;
         user-select: none;
         grid-column: 1;
         grid-row: 1;
@@ -27,10 +28,10 @@
 
     & .reg-form {
         margin-top: 90px;
-        margin-left: 40px;
         height: 200px;
         width: 300px;
         gap: 10px;
+        justify-self: center;
         display: grid;
         grid-column: 1;
         grid-row: 1;
@@ -64,7 +65,7 @@
         }
         & button {
             margin-top: 10px;
-            height: 60px;
+            height: 50px;
             background-color: transparent;
             border: 2px solid white;
             color: white;

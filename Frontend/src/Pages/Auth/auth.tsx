@@ -45,7 +45,7 @@ export default function Auth() {
                 <button onClick={handleLogin}>Войти</button>
             </div>
 
-            <div className="reg-input">
+            <div className="auth-reg-input">
                 <span>Нет аккаунта?</span>
                 <Link to="/auth/reg"><button>Зарегистрироваться</button></Link>
             </div>

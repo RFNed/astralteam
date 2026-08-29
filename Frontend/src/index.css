@@ -49,6 +49,9 @@ body {
     border-bottom-right-radius: 40px;
     user-select: none;
     transition: transform 300ms ease;
+    & a {
+        -webkit-user-drag: none;
+    }
     &.hidden {
         transform: translateY(-100%);
     }
@@ -63,9 +66,9 @@ body {
 }
 
 .logo img {
+    -webkit-user-drag: none;
     height: 115px;
     display: block;
-
     transition: transform .1s ease,
                 filter .1s ease;
 }
