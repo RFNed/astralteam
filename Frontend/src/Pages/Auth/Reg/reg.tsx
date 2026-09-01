@@ -7,7 +7,7 @@ import { register } from "../../../Api/client";
 import { useLoaded } from "../../../Contexts/loadContext";
 import { sleep, IS_DEBUG } from "../../../Modules/other";
 import { APIError } from "../../../Api/class/APIError";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ERROR_MESSAGES: Record<string, string> = {
     INVALID_EMAIL: "Электронная почта не валидна, или занята",
