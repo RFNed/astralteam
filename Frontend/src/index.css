@@ -156,3 +156,22 @@ body {
     background-position-y: 50%;
     background-position-x: 50%;
 }
+
+.on-development {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+    & .development-cat-img {
+        font-size: 100px;
+        text-align: center;
+    }
+    & .development-text {
+        font-family: Unbounded;
+        font-size: 30px;
+        text-align: center;
+        font-weight: 600;
+    }
+}

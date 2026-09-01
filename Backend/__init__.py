@@ -1,14 +1,15 @@
 import os, aiomysql, sys, random, aiofiles, redis, re
-from fastapi import Depends, HTTPException, FastAPI
+from fastapi import Depends, HTTPException, FastAPI, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
-from Backend.Modules.Logger import Logger
+import aiofiles
 
+from Backend.Modules.Logger import Logger
+from Backend.Modules.Email import EmailService
 # Routes
 from Backend.Routes.User import router as register_router
-
 
 
 ####### On Windows ##########
@@ -22,6 +23,14 @@ if sys.platform == "win32":
 logger = Logger("Backend")
 
 load_dotenv()
+
+test_email = EmailService(
+    hostname=os.getenv("VERIFY_HOSTNAME"),
+    username=os.getenv("VERIFY_USERNAME"),
+    port=int(os.getenv("VERIFY_PORT")),
+    password=os.getenv("VERIFY_PASSWORD")
+)
+
 is_debug = os.getenv("DEBUG") == "True"
 
 CORS_ORIGINS = [
@@ -126,8 +135,21 @@ async def lifespan(app: FastAPI):
     os._exit(0)
 
 
-app = FastAPI(lifespan=lifespan, debug=is_debug, title="Backend Astral API", description="Backend API for Astral application", version="0.5.0", docs_url="/docs" if os.getenv("DEBUG") == "True" else None, redoc_url=None)
+
+app = FastAPI(lifespan=lifespan, debug=is_debug, title="Backend Astral API", description="Backend API for Astral application", version="0.5.5b", docs_url="/docs" if os.getenv("DEBUG") == "True" else None, redoc_url=None)
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 app.mount("/download/installer", StaticFiles(directory="Backend/Download/Installer"), name="download_dir")
 app.mount("/resource", StaticFiles(directory="Backend/Resource"), name="resource_dir")
 app.include_router(register_router)
+
+@app.get("/emailtest")
+async def test():
+    if IS_DEBUG:
+        try:
+            async with aiofiles.open("Backend/Modules/Email/example_mail.html", "r") as html:
+                content = await html.read()
+                await test_email.send(os.getenv("DEBUG_MAIL"), "Test email", "Click here to watch", content)
+            return {"detail": {"code": "TEST_CORRECT", "message": "Email message is sended"}}
+        except Exception as error:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail={"code": "ERROR_TEST_MAIL", "message": f"{error}"})
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")

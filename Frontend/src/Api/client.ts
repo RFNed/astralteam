@@ -21,7 +21,6 @@ export async function register(data: RegisterInterface)
     if (!response.ok)
     {
         const message = await response.json()
-        console.log(message.status)
         throw new APIError(
             message.detail.code,
             response.status

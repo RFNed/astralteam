@@ -1,5 +1,12 @@
+import aiofiles
 from email.message import EmailMessage
 from aiosmtplib import SMTP
+    
+async def parse_template(template_html: str, image_path: str, link: str) -> str:
+    async with aiofiles.open(template_html, "r") as template_email:
+        content = await template_email.read()
+        content = content.replace("{{image_path}}", image_path).replace("{{link}}", link)
+        return content
 
 class EmailService:
     def __init__(self, hostname: str, port: int, username: str, password: str):

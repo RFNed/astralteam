@@ -138,6 +138,7 @@ export default function Reg() {
                             : "Неизвестная ошибка"
                     ShowNotifyBox(message, true)
                 }
+                ShowNotifyBox(message, true)
             } else {
                 console.log(error)
                 ShowNotifyBox("Непредвиденная ошибка, взгляните в консоль", true)
