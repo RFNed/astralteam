@@ -31,7 +31,7 @@ test_email = EmailService(
     password=os.getenv("VERIFY_PASSWORD")
 )
 
-is_debug = os.getenv("DEBUG") == "True"
+IS_DEBUG = os.getenv("DEBUG") == "True"
 
 CORS_ORIGINS = [
     origin.strip()
@@ -76,7 +76,7 @@ async def lifespan(app: FastAPI):
         logger.fatal("Redis is not launched")
         os._exit(1)
 
-    if is_debug:
+    if IS_DEBUG:
         logger.hint("Redis connected")
 
     # MySQL
@@ -98,13 +98,13 @@ async def lifespan(app: FastAPI):
 
         conn.close()
 
-        if is_debug:
+        if IS_DEBUG:
             logger.hint("Database is checked, creating pool!")
 
         app.state.db_pool = await aiomysql.create_pool(**DB_CONFIG)
         app.state.redis = await redis.asyncio.Redis(**REDIS_CONFIG)
 
-        if is_debug:
+        if IS_DEBUG:
             logger.hint("Database and Redis pool, is created")
 
     # Cant connected MySQL
@@ -126,7 +126,7 @@ async def lifespan(app: FastAPI):
     if hasattr(app.state, "redis") and app.state.redis:
         await app.state.redis.close()
 
-    if is_debug:
+    if IS_DEBUG:
         if getattr(app.state, "db_pool", None) is not None:
             logger.info("Database pool is disconnected!")
         if getattr(app.state, "redis", None) is not None:
@@ -136,7 +136,7 @@ async def lifespan(app: FastAPI):
 
 
 
-app = FastAPI(lifespan=lifespan, debug=is_debug, title="Backend Astral API", description="Backend API for Astral application", version="0.5.5b", docs_url="/docs" if os.getenv("DEBUG") == "True" else None, redoc_url=None)
+app = FastAPI(lifespan=lifespan, debug=IS_DEBUG, title="Backend Astral API", description="Backend API for Astral application", version="0.5.5b", docs_url="/docs" if os.getenv("DEBUG") == "True" else None, redoc_url=None)
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 app.mount("/download/installer", StaticFiles(directory="Backend/Download/Installer"), name="download_dir")
 app.mount("/resource", StaticFiles(directory="Backend/Resource"), name="resource_dir")

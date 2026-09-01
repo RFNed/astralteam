@@ -22,6 +22,7 @@ import Reg from './Pages/Auth/Reg/reg.tsx'
 import AuthProvider from './Contexts/authContext.tsx'
 import LoadProvider from './Contexts/loadContext.tsx'
 import RegEmailNotify from './Pages/Auth/Reg/Email/regemailnotify.tsx';
+import VerifyEmail from './Pages/Special/VerifyEmail/verifyemail.tsx';
 
 /* ------------------------------------------------------- */
 
@@ -96,6 +97,7 @@ function Pages() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/registration" element={<Reg />} />
           <Route path="/registration/mail" element={<RegEmailNotify />} />
+          <Route path="/registration/verify/:token" element={<VerifyEmail />} />
         </Routes>
       </motion.div>
     </AnimatePresence>
