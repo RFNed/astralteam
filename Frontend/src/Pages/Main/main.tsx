@@ -5,7 +5,7 @@ export default function Main() {
     // const { nickname, setNickname } = useAuth()
 
     const downloadLauncher = () => {
-        window.location.href = `${import.meta.env.VITE_API_URL}/download/installer/astralinstaller.exe`
+        window.location.href = `${import.meta.env.VITE_API_URL}/resource/download/installer/astralinstaller.exe`
     }
 
     return (
