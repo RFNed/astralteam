@@ -1,4 +1,4 @@
-# <img src="Frontend/public/pics/astralcat.png" width="100" align="middle"> Astral Team
+# <img src="frontend/public/pics/astralcat.png" width="100" align="middle"> Astral Team
 
 **Astral Team** — веб-сайт магазина компьютерных игр, разрабатываемый как полноценная игровая платформа с каталогом игр, пользовательскими аккаунтами и дополнительными сервисами.
 
