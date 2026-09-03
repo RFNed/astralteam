@@ -1,7 +1,13 @@
 import aiofiles
+
+from os import getenv
+from dotenv import load_dotenv
 from email.message import EmailMessage
 from aiosmtplib import SMTP
-    
+
+load_dotenv()
+FRONTEND_URL = getenv('FRONTEND_URL')
+
 async def parse_template(template_html: str, image_path: str, link: str) -> str:
     async with aiofiles.open(template_html, "r") as template_email:
         content = await template_email.read()
@@ -36,3 +42,14 @@ class EmailService:
             )
 
             await smtp.send_message(message)
+            
+    async def send_verification_email(self, to: str, token: str):
+            html_content = await parse_template(
+                        template_html="backend/resource/email/template_mail.html",
+                        image_path=("https://raw.githubusercontent.com/RFNed/astralteam/main/Frontend/public/pics/astralcat.png"),link=(f"{FRONTEND_URL}/verify-email?token={token}"))
+            await self.send(
+                to=to,
+                subject="Verify your email",
+                simple_content="Подтверждение аккаунта",
+                HTML_content=html_content,
+            )

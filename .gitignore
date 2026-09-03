@@ -2,18 +2,18 @@
 __pycache__/
 **/*.pyc
 .env
-Frontend/logs
-Frontend/*.log
-Frontend/npm-debug.log*
-Frontend/yarn-debug.log*
-Frontend/yarn-error.log*
-Frontend/pnpm-debug.log*
-Frontend/lerna-debug.log*
+frontend/logs
+frontend/*.log
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/lerna-debug.log*
 
-Frontend/node_modules
-Frontend/dist
-Frontend/dist-ssr
-Frontend/*.local
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+frontend/*.local
 
 Backend/Resource/download/installer/astralinstaller.exe
 
@@ -26,4 +26,4 @@ Backend/Resource/download/installer/astralinstaller.exe
 **/*.njsproj
 **/*.sln
 *.sw?
-Frontend/.env
+frontend/.env

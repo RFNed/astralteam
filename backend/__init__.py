@@ -6,10 +6,10 @@ from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 import aiofiles
 
-from Backend.Modules.Logger import Logger
-from Backend.Modules.Email import EmailService
+from backend.core.logger import Logger
+from backend.core.email import EmailService
 # Routes
-from Backend.Routes.User import router as register_router
+from backend.api.user import router as register_router
 
 
 ####### On Windows ##########
@@ -90,7 +90,7 @@ async def lifespan(app: FastAPI):
                 result = await cursor.fetchone() is not None
                 if not result:
                     await cursor.execute(f"CREATE DATABASE {DB_NAME}")
-                    async with aiofiles.open("Backend/Modules/Database/Structure/DATABASE.sql") as sql_database:
+                    async with aiofiles.open("backend/resource/database/structure/database.sql") as sql_database:
                         await cursor.execute(await sql_database.read())
                         logger.info("Database is inited, dont change anything!")
         except Exception as e:
@@ -138,14 +138,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan, debug=IS_DEBUG, title="Backend Astral API", description="Backend API for Astral application", version="0.5.5b", docs_url="/docs" if os.getenv("DEBUG") == "True" else None, redoc_url=None)
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
-app.mount("/resource", StaticFiles(directory="Backend/Resource"), name="resource_dir")
 app.include_router(register_router)
 
 @app.get("/emailtest")
 async def test():
     if IS_DEBUG:
         try:
-            async with aiofiles.open("Backend/Modules/Email/example_mail.html", "r") as html:
+            async with aiofiles.open("backend/resource/email/example_mail.html", "r") as html:
                 content = await html.read()
                 await test_email.send(os.getenv("DEBUG_MAIL"), "Test email", "Click here to watch", content)
             return {"detail": {"code": "TEST_CORRECT", "message": "Email message is sended"}}
