@@ -1,14 +1,14 @@
 import os, aiomysql, sys, random, aiofiles, redis, re
+import aiofiles
 from fastapi import Depends, HTTPException, FastAPI, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from dotenv import load_dotenv
-import aiofiles
 
 from backend.core.logger import Logger
 from backend.core.email import EmailService
-# Routes
+from backend.core.config import settings
+# API
 from backend.api.user import router as register_router
 
 
@@ -22,46 +22,44 @@ if sys.platform == "win32":
 
 logger = Logger("Backend")
 
-load_dotenv()
-
 test_email = EmailService(
-    hostname=os.getenv("VERIFY_HOSTNAME"),
-    username=os.getenv("VERIFY_USERNAME"),
-    port=int(os.getenv("VERIFY_PORT")),
-    password=os.getenv("VERIFY_PASSWORD")
+    hostname=settings.VERIFY_HOSTNAME,
+    username=settings.VERIFY_USERNAME,
+    port=settings.VERIFY_PORT,
+    password=settings.VERIFY_PASSWORD
 )
 
-IS_DEBUG = os.getenv("DEBUG") == "True"
+IS_DEBUG = settings.DEBUG == "True"
 
 CORS_ORIGINS = [
     origin.strip()
-    for origin in list(str(os.getenv("CORS_ORIGINS")).split(","))
+    for origin in list(str(settings.CORS_ORIGINS).split(","))
 ]
 
-DB_NAME = os.getenv("MYSQL_DATABASE", "astralteam")
+DB_NAME = settings.MYSQL_DATABASE
 
 if not re.fullmatch(r"[A-Za-z0-9_]+", DB_NAME):
     raise ValueError("Error name")
 
 DB_CONFIG = {
-    "host": os.getenv("MYSQL_HOST", "localhost"),
-    "user": os.getenv("MYSQL_USER", "root"),
-    "password": os.getenv("MYSQL_PASSWORD", ""),
-    "port": int(os.getenv("MYSQL_PORT", 3306)),
-    "charset": os.getenv("MYSQL_CHARSET", "utf8mb4"),
+    "host": settings.MYSQL_HOST,
+    "user": settings.MYSQL_USER,
+    "password": settings.MYSQL_PASSWORD,
+    "port": settings.MYSQL_PORT,
+    "charset": settings.MYSQL_CHARSET,
     "autocommit": True,
-    "minsize": int(os.getenv("MYSQL_POOL_SIZE_MIN", 10)),
-    "maxsize": int(os.getenv("MYSQL_POOL_SIZE_MAX", 20)),
-    "db": os.getenv("MYSQL_DATABASE")
+    "minsize": settings.MYSQL_POOL_SIZE_MIN,
+    "maxsize": settings.MYSQL_POOL_SIZE_MAX,
+    "db": settings.MYSQL_DATABASE
 }
 
 REDIS_CONFIG = {
-    "host": os.getenv("REDIS_HOST", "localhost"),
-    "username": os.getenv("REDIS_USER", "default"),
-    "password": os.getenv("REDIS_PASSWORD", ""),
-    "port": os.getenv("REDIS_PORT", 6379),
-    "db": int(os.getenv("REDIS_DATABASE", 0)),
-    "max_connections": int(os.getenv("REDIS_MAX_CONNECTIONS", 50))
+    "host": settings.REDIS_HOST,
+    "username": settings.REDIS_USER,
+    "password": settings.REDIS_PASSWORD,
+    "port": settings.REDIS_PORT,
+    "db": settings.REDIS_DATABASE,
+    "max_connections": settings.REDIS_MAX_CONNECTIONS
 }
 
 @asynccontextmanager
@@ -136,7 +134,7 @@ async def lifespan(app: FastAPI):
 
 
 
-app = FastAPI(lifespan=lifespan, debug=IS_DEBUG, title="Backend Astral API", description="Backend API for Astral application", version="0.5.5b", docs_url="/docs" if os.getenv("DEBUG") == "True" else None, redoc_url=None)
+app = FastAPI(lifespan=lifespan, debug=IS_DEBUG, title="Backend Astral API", description="Backend API for Astral application", version="0.5.5b", docs_url="/docs" if settings.DEBUG == "True" else None, redoc_url=None)
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 app.include_router(register_router)
 
@@ -146,7 +144,7 @@ async def test():
         try:
             async with aiofiles.open("backend/resource/email/example_mail.html", "r") as html:
                 content = await html.read()
-                await test_email.send(os.getenv("DEBUG_MAIL"), "Test email", "Click here to watch", content)
+                await test_email.send(settings.DEBUG_MAIL, "Test email", "Click here to watch", content)
             return {"detail": {"code": "TEST_CORRECT", "message": "Email message is sended"}}
         except Exception as error:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail={"code": "ERROR_TEST_MAIL", "message": f"{error}"})

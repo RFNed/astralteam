@@ -9,3 +9,4 @@ redis==8.1.0
 aiosmtplib==5.1.2
 argon2-cffi==25.1.0
 yoomoney==2.0.0
+pydantic-settings==2.15.0

@@ -1,12 +1,9 @@
 import aiofiles
-
-from os import getenv
-from dotenv import load_dotenv
+from backend.core.config import settings
 from email.message import EmailMessage
 from aiosmtplib import SMTP
 
-load_dotenv()
-FRONTEND_URL = getenv('FRONTEND_URL')
+FRONTEND_URL = settings.FRONTEND_URL
 
 async def parse_template(template_html: str, image_path: str, link: str) -> str:
     async with aiofiles.open(template_html, "r") as template_email:
