@@ -10,6 +10,11 @@ interface APIResponse<T = undefined> {
     }
 }
 
+interface AuthInterface {
+    username: string
+    password: string
+}
+
 interface RegisterInterface {
     username: string
     email: string
@@ -38,14 +43,21 @@ async function request<T>(endpoint: string,options: RequestInit = {}): Promise<A
     return data
 }
 
-export function register(data: RegisterInterface) {
+export async function register(data: RegisterInterface) {
     return request<undefined>("/user/register", {
         method: "POST",
         body: JSON.stringify(data)
     })
 }
 
-export function verifyEmail(token: string) {
+export async function auth(data: AuthInterface) {
+    return request<undefined>("/user/auth", {
+        method: "POST",
+        body: JSON.stringify(data)
+    })
+}
+
+export async function verifyEmail(token: string) {
     return request<undefined>("/user/verify-email", {
         method: "POST",
         body: JSON.stringify({ token })

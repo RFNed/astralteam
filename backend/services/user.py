@@ -1,11 +1,11 @@
 from backend.repositories.user import UserRepository
 from backend.core.security import password_hasher
 from backend.core.email import EmailService
-from backend.schemas.user import UserRegister, UserVerify
+from backend.schemas.user import UserRegister, UserVerify, UserAuth
 
 from email_validator import validate_email, EmailNotValidError
-from fastapi import HTTPException, status
-from secrets import token_hex
+from fastapi import HTTPException, status, Response
+from secrets import token_hex, token_urlsafe
 
 class UserService:
     def __init__(self, repository: UserRepository, redis, email: EmailService):
@@ -100,3 +100,28 @@ class UserService:
                 }
             }
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"code": "INVALID_TOKEN", "message": "Token not exists"})
+
+    async def auth(self, data: UserAuth):
+        user = await self.repository.auth(data.username)
+        if user is None:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"code": "ACCOUNT_NOT_EXISTS", "message": "Account not exists, or not verified"})
+
+        try:
+            password_hasher.verify(user["password_hash"], data.password)
+        except:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"code": "INCORRECT_PASS", "message": "Incorrect password"})
+        
+        session_id = token_urlsafe(32)
+        await self.redis.set(
+                f"session:{session_id}",
+                user["id"],
+                ex=60 * 60 * 24 * 30
+            )
+        
+        return {
+            "session_id": session_id,
+            "detail": {
+                "code": "SUCCESS",
+                "message": "Auth is succeed"
+            }
+        }

@@ -1,9 +1,9 @@
 from backend.api.dependencies import UserDependencies
-from backend.schemas.user import UserRegister, UserVerify
+from backend.schemas.user import UserRegister, UserVerify, UserAuth
 from backend.services.user import UserService
 
 from fastapi.routing import APIRouter
-from fastapi import Depends
+from fastapi import Depends, Response
 
 router = APIRouter(tags=["User"], prefix="/user")
 
@@ -14,3 +14,16 @@ async def register_user(data: UserRegister, service: UserService = Depends(UserD
 @router.post("/verify-email")
 async def register_user(data: UserVerify, service: UserService = Depends(UserDependencies.get_user_service)):
     return await service.verify_email(data)
+
+@router.post("/auth")
+async def register_user(data: UserAuth, response: Response, service: UserService = Depends(UserDependencies.get_user_service)):
+    result = await service.auth(data)
+    response.set_cookie(
+        key="session_id",
+        value=result["session_id"],
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=60 * 60 * 24 * 30
+    )
+    return {"detail": result["detail"]}

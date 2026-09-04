@@ -2,9 +2,18 @@ import "./auth.css"
 
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../../Api/client";
+import { APIError } from "../../Api/class/APIError";
+
+const ERROR_MESSAGES: Record<string, string> = {
+    INCORRECT_PASS: "Неверный пароль",
+    ACCOUNT_NOT_EXISTS: "Аккаунт не существует, или не подтвержден"
+}
 
 export default function Auth() {
+    const navigate = useNavigate()
+
     const [login, setLogin] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
@@ -12,17 +21,42 @@ export default function Auth() {
     const [VisibleBoxText, setVisibleBoxText] = useState<boolean>(false);
     const [IsNotifyError, setIsNotifyError] = useState<boolean>(false); 
 
+    const ShowNotifyBox = (text: string, isError: boolean) => {
+        setNotifyBoxText(text)
+        setIsNotifyError(isError)
+        setVisibleBoxText(true)
+    }
+
     const handleLogin = async () => {
         if (login.trim() === "" || password.trim() === "") {
-            setNotifyBoxText("Введите все поля")
-            setVisibleBoxText(true)
-            setIsNotifyError(false)
+            ShowNotifyBox("Введите данные", false)
             return
         }
-
-        setNotifyBoxText("Неверный логин или пароль")
-        setVisibleBoxText(true)
-        setIsNotifyError(true)
+        try 
+        {
+            const response = await auth({ username: login, password: password })
+            if (response.detail.code === "SUCCESS")
+            {
+                ShowNotifyBox("Аккаунт авторизован", false)
+                navigate("/")
+            }
+        } 
+        catch (error)
+        {
+            if (error instanceof APIError)
+            {
+                let message = ERROR_MESSAGES[error.code]
+                if (!message)
+                {
+                    message = error.status === 500
+                        ? "Ошибка сервера"
+                        : "Неизвестная ошибка"
+                }
+                ShowNotifyBox(message, true)
+            } else {
+                console.log(error)
+            }
+        }
     };
 
     return (
