@@ -10,12 +10,13 @@
     align-items: center;
     opacity: 0;
     transition: opacity 600ms ease;
+    user-select: none;
     & .verify-email-title {
         font-size: 36px;
         font-weight: bolder;
     }
     & .verify-email-message {
-        font-size: 24px;
+        font-size: 20px;
         margin-top: 30px;
     }
     &.visible {

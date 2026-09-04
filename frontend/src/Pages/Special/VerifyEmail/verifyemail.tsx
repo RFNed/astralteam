@@ -27,7 +27,7 @@ export default function VerifyEmail() {
             {
                 SetEmailNotificationVisible(true)
                 SetEmailNotificationTitle("ГОТОВО")
-                SetEmailNotificationMessage("Почта подтверждена! Вы можете войти в аккаунт!")
+                SetEmailNotificationMessage("Почта подтверждена, вы можете закрыть страницу и войти в аккаунт")
             }
         } catch (error) {
             if (error instanceof APIError) {
@@ -37,9 +37,7 @@ export default function VerifyEmail() {
                         ? "Ошибка сервера, попробуйте позже"
                         : "Неизвестная ошибка"
                 }
-                SetEmailNotificationVisible(true)
-                SetEmailNotificationTitle("ОШИБКА")
-                SetEmailNotificationMessage(message)
+                navigate("/")
             } else {
                 console.log(error)
             }
