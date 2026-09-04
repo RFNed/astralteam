@@ -1,7 +1,7 @@
 from backend.repositories.user import UserRepository
 from backend.core.security import password_hasher
 from backend.core.email import EmailService
-from backend.schemas.user import UserRegister
+from backend.schemas.user import UserRegister, UserVerify
 
 from email_validator import validate_email, EmailNotValidError
 from fastapi import HTTPException, status
@@ -22,7 +22,6 @@ class UserService:
                     "message": "Data required for registration",
                 },
             )
-        
         if len(data.username) <= 6:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -31,7 +30,6 @@ class UserService:
                     "message": "Username must be more than 6 characters",
                 },
             )
-
         if len(data.password) <= 6:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -49,7 +47,6 @@ class UserService:
                     "message": "Password and username must be ASCII",
                 },
             )
-
         try:
             validate_email(data.email)
         except EmailNotValidError:
@@ -65,7 +62,6 @@ class UserService:
             username=data.username,
             email=data.email,
         )
-
         if exists:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -76,7 +72,6 @@ class UserService:
             )
 
         password_hash = password_hasher.hash(data.password)
-
         await self.repository.create_user(
             username=data.username,
             email=data.email,
@@ -84,13 +79,24 @@ class UserService:
         )
 
         verification_token = token_hex(32)
-
         await self.redis.set(
             f"verify_email:{verification_token}",
             data.email,
             ex=3600,
         )
-
         await self.email.send_verification_email(to=data.email, token=verification_token)
+        return {"detail": {"code": "SUCCESS", 
+                           "message": "Registration is successful, check your email for verification"}}
 
-        return {"detail": {"code": "SUCCESS","message": "Registration is successful, check your email for verification"}}
+    async def verify_email(self, data: UserVerify):
+        result = await self.redis.get(f"verify_email:{data.token}")
+        if result is not None:
+            await self.repository.verify_user_email(result)
+            await self.redis.delete(f"verify_email:{data.token}")
+            return {
+                "detail": {
+                    "code": "SUCCESS",
+                    "message": "Verify email is success!"
+                }
+            }
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"code": "INVALID_TOKEN", "message": "Token not exists"})
