@@ -15,3 +15,8 @@ class UserRepository:
         await self.db.execute(query, (username, email,))
         result = await self.db.fetchone()
         return result is not None
+    async def verify_user_email(self, email: str):
+        query = """
+            UPDATE users SET email_verify = 1 WHERE email = %s
+        """
+        await self.db.execute(query, (email,))

@@ -1,0 +1,24 @@
+.verify-email {
+    justify-self: center;
+    margin-top: 20px;
+    background-color: rgba(46, 46, 46, 0.3);
+    width: 700px;
+    padding: 40px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 600ms ease;
+    & .verify-email-title {
+        font-size: 36px;
+        font-weight: bolder;
+    }
+    & .verify-email-message {
+        font-size: 24px;
+        margin-top: 30px;
+    }
+    &.visible {
+        opacity: 1;
+    }
+}

@@ -43,7 +43,7 @@ class EmailService:
     async def send_verification_email(self, to: str, token: str):
             html_content = await parse_template(
                         template_html="backend/resource/email/template_mail.html",
-                        image_path=("https://raw.githubusercontent.com/RFNed/astralteam/main/Frontend/public/pics/astralcat.png"),link=(f"{FRONTEND_URL}/verify-email?token={token}"))
+                        image_path=("https://raw.githubusercontent.com/RFNed/astralteam/main/Frontend/public/pics/astralcat.png"),link=(f"{FRONTEND_URL}/registration/verify/{token}"))
             await self.send(
                 to=to,
                 subject="Verify your email",

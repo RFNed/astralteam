@@ -1,5 +1,5 @@
 from backend.api.dependencies import UserDependencies
-from backend.schemas.user import UserRegister
+from backend.schemas.user import UserRegister, UserVerify
 from backend.services.user import UserService
 
 from fastapi.routing import APIRouter
@@ -10,3 +10,7 @@ router = APIRouter(tags=["User"], prefix="/user")
 @router.post("/register")
 async def register_user(data: UserRegister, service: UserService = Depends(UserDependencies.get_user_service)):
     return await service.register(data)
+
+@router.post("/verify-email")
+async def register_user(data: UserVerify, service: UserService = Depends(UserDependencies.get_user_service)):
+    return await service.verify_email(data)
