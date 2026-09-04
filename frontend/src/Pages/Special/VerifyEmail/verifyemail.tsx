@@ -1,9 +1,10 @@
 import "./verifyemail.css"
 import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { Helmet } from "react-helmet-async";
+
 import { verifyEmail } from "../../../Api/client"
 import { APIError } from "../../../Api/class/APIError";
-
 
 const ERROR_MESSAGES: Record<string, string> = {
     "INVALID_TOKEN": "Токена не существует",
@@ -50,6 +51,10 @@ export default function VerifyEmail() {
 
     return (
         <>
+        
+        <Helmet>
+            <title>Верификация аккаунта</title>
+        </Helmet>
 
         <div className={`verify-email ${EmailNotificationVisible ? "visible" : ""}`}>
             <span className="verify-email-title">
