@@ -20,7 +20,6 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export default function AuthProvider({ children }: { children: ReactNode })
 {
-    const sessionId = String(document.cookie.split("; ").find(row => row.startsWith("session_id="))?.split("=")[1])
     const [Nickname, setNickname] = useState<string>("")
     const [AvatarURL, setAvatarURL] = useState<string>("")
     const [Entered, setEntered] = useState<boolean>(false)
@@ -29,7 +28,7 @@ export default function AuthProvider({ children }: { children: ReactNode })
     useEffect(() => {
         const Loader = async () => {
             try {
-                const response = await parseBySession()
+                await parseBySession()
                 setEntered(true)
             } catch (error) {
                 if (error instanceof APIError)
