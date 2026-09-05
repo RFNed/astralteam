@@ -10,6 +10,16 @@ interface APIResponse<T = undefined> {
     }
 }
 
+interface ParseUserInterface {
+    id: string
+    username: string
+    avatar_url: {
+        "url": string
+        "type": string 
+    }
+    "email": string
+}
+
 interface AuthInterface {
     username: string
     password: string
@@ -28,6 +38,7 @@ async function request<T>(endpoint: string,options: RequestInit = {}): Promise<A
             "Content-Type": "application/json",
             ...options.headers
         },
+        "credentials": "include",
         ...options
     })
 
@@ -61,5 +72,11 @@ export async function verifyEmail(token: string) {
     return request<undefined>("/user/verify-email", {
         method: "POST",
         body: JSON.stringify({ token })
+    })
+}
+
+export async function parseBySession() {
+    return request<ParseUserInterface>("/user/me", {
+        method: "GET"
     })
 }

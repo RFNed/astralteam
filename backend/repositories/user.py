@@ -2,11 +2,11 @@ class UserRepository:
 
     def __init__(self, db):
         self.db = db
-    async def parse_user(self, username: str):
+    async def parse_user(self, id: str):
         query = """
-            SELECT * from USERS WHERE username = %s
+            SELECT * FROM users WHERE id = %s
         """
-        await self.db.execute(query, (username,))
+        await self.db.execute(query, (id,))
         result = await self.db.fetchone()
         return result
     

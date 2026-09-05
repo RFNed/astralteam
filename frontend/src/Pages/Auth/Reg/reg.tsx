@@ -136,7 +136,6 @@ export default function Reg() {
                     message = error.status === 500
                             ? "Ошибка сервера, попробуйте позже"
                             : "Неизвестная ошибка"
-                    ShowNotifyBox(message, true)
                 }
                 ShowNotifyBox(message, true)
             } else {

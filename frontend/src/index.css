@@ -157,6 +157,24 @@ body {
     background-position-x: 50%;
 }
 
+.entered {
+    border: 2px solid white;
+    height: 50px;
+    width: 50px;
+    border-radius: 40px;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    position: absolute;
+    bottom: 50%;
+    transform: translateY(50%);
+    overflow: hidden;
+    & img {
+        width: 60px;
+    }
+}
+
 .on-development {
     display: flex;
     flex-direction: column;

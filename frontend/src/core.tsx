@@ -19,7 +19,7 @@ import Reg from './Pages/Auth/Reg/reg.tsx'
 
 /* Providers */
 
-import AuthProvider from './Contexts/authContext.tsx'
+import AuthProvider, { useAuth } from './Contexts/authContext.tsx'
 import LoadProvider from './Contexts/loadContext.tsx'
 import RegEmailNotify from './Pages/Auth/Reg/Email/regemailnotify.tsx';
 import VerifyEmail from './Pages/Special/VerifyEmail/verifyemail.tsx';
@@ -30,6 +30,7 @@ import VerifyEmail from './Pages/Special/VerifyEmail/verifyemail.tsx';
 function Head() {
   const [HiddenHeadBar, setHiddenHeadBar] = useState<boolean>(false);
 
+  const AuthContext = useAuth()
   useEffect(() => {
     let lastScroll = window.scrollY
     const handleScroll = () => {
@@ -52,6 +53,10 @@ function Head() {
     }
   }, [])
 
+  useEffect(() => {
+
+  }, [AuthContext.AuthLoading])
+
   return (
     <>
       <header>
@@ -67,9 +72,9 @@ function Head() {
                   <Link to="/news"><span>НОВОСТИ</span></Link>
                   <Link to="/community"><span>СООБЩЕСТВО</span></Link>
               </div>
-
               <div className="user-circle">
-                  <Link to="/auth"><div className="non-registered" title="Войти"/></Link>
+                  <Link to="/auth" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}}><div className="non-registered" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}} title="Войти"/></Link>
+                  <div className="entered" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}}><img src="http://127.0.0.1:8000/assets/avatars/no_avatar.png" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}} /></div>
               </div>
           </div>
       </header>

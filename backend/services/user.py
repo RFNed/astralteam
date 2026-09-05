@@ -1,3 +1,4 @@
+import json
 from backend.repositories.user import UserRepository
 from backend.core.security import password_hasher
 from backend.core.email import EmailService
@@ -123,5 +124,23 @@ class UserService:
             "detail": {
                 "code": "SUCCESS",
                 "message": "Auth is succeed"
+            }
+        }
+
+    async def parse_user_by_session_id(self, data: str):
+        id_user = await self.redis.get(f"session:{data}")
+        if not id_user:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"code": "INVALID_SESSION", "message": "Invalid session id"})
+
+        result = await self.repository.parse_user(id_user)
+        result["avatar_url"] = json.loads(result["avatar_url"])
+        return {
+            "code": "SUCCESS", 
+            "message": "Parsed successfully", 
+            "data": {
+                "id": result["id"],
+                "username": result["username"],
+                "avatar_url": result["avatar_url"],
+                "email": result["email"]
             }
         }

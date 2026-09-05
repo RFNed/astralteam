@@ -1,22 +1,55 @@
-import { createContext, useState, useContext, type ReactNode, type SetStateAction } from "react";
+import { createContext, useState, useContext, type ReactNode, type SetStateAction, useEffect } from "react";
+import { parseBySession } from "../Api/client";
+import { APIError } from "../Api/class/APIError";
 
+const ERROR_MESSAGES: Record<string, string> = {
+    INVALID_SESSION: "Сессия не валидна",
+    NOT_EXISTS_SESSION: "Сессия не существует"
+}
 
 interface AuthContextType {
-    Nickname: any,
+    Nickname: string,
     setNickname: React.Dispatch<SetStateAction<any>>,
-    AvatarURL: any,
-    setAvatarURL: React.Dispatch<SetStateAction<any>> 
+    AvatarURL: string,
+    setAvatarURL: React.Dispatch<SetStateAction<any>> ,
+    AuthLoading: boolean,
+    Entered: boolean
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export default function AuthProvider({ children }: { children: ReactNode })
 {
-    const [Nickname, setNickname] = useState(null)
-    const [AvatarURL, setAvatarURL] = useState(null)
+    const sessionId = String(document.cookie.split("; ").find(row => row.startsWith("session_id="))?.split("=")[1])
+    const [Nickname, setNickname] = useState<string>("")
+    const [AvatarURL, setAvatarURL] = useState<string>("")
+    const [Entered, setEntered] = useState<boolean>(false)
+    const [AuthLoading, SetAuthLoading] = useState<boolean>(true)
+
+    useEffect(() => {
+        const Loader = async () => {
+            try {
+                const response = await parseBySession()
+                setEntered(true)
+            } catch (error) {
+                if (error instanceof APIError)
+                {
+                    let message = ERROR_MESSAGES[error.code]
+                    if (!message) {
+                        message = error.status === 500
+                                ? "Ошибка сервера"
+                                : "Неизвестная ошибка"
+                    }
+                    console.log(message)
+                }
+            }
+            SetAuthLoading(false)
+        }
+        Loader()
+    }, [])
 
     return (
-        <AuthContext.Provider value={{ Nickname, setNickname, AvatarURL, setAvatarURL }}>
+        <AuthContext.Provider value={{ Nickname, setNickname, AvatarURL, setAvatarURL, AuthLoading, Entered }}>
             {children}
         </AuthContext.Provider>
     )
