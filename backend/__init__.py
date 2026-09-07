@@ -1,5 +1,6 @@
 import os, aiomysql, sys, random, aiofiles, redis, re
 import aiofiles
+from aioyookassa import YooKassa
 from fastapi import Depends, HTTPException, FastAPI, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,8 +11,7 @@ from backend.core.email import EmailService
 from backend.core.config import settings
 # API
 from backend.api.user import router as register_router
-
-
+from backend.api.balance import router as balance_router
 ####### On Windows ##########
 
 if sys.platform == "win32":
@@ -64,6 +64,9 @@ REDIS_CONFIG = {
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+
+    # Yookassa
+    client = YooKassa(api_key=settings.PAYMENT_SYSTEM_SECRET_KEY, shop_id=settings.PAYMENT_SYSTEM_SHOP_ID)
 
     # Redis
     conn_redis = None
@@ -121,15 +124,21 @@ async def lifespan(app: FastAPI):
         app.state.db_pool.close()
         await app.state.db_pool.wait_closed()
 
+    if hasattr(app.state, "yookassa") and app.state.yookassa:
+        await app.state.yookassa.close()
+
     if hasattr(app.state, "redis") and app.state.redis:
         await app.state.redis.close()
 
     if IS_DEBUG:
+        if getattr(app.state, "yookassa") is not None:
+            logger.info("Yookassa client is disconnected!")
         if getattr(app.state, "db_pool", None) is not None:
             logger.info("Database pool is disconnected!")
         if getattr(app.state, "redis", None) is not None:
             logger.info("Redis is disconnected!")
-        logger.hint("Bye-bye!")
+    
+    logger.hint("Bye-bye!")
     os._exit(0)
 
 
@@ -140,6 +149,7 @@ app.mount("/assets", StaticFiles(directory="backend/public"), name="public files
 
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 app.include_router(register_router)
+app.include_router(balance_router)
 
 @app.get("/emailtest")
 async def test():

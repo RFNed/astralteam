@@ -1,10 +1,14 @@
 from backend.core.email import EmailService
 from backend.core.database import get_db
 from backend.core.redis import get_redis
-from backend.repositories.user import UserRepository
-from backend.services.user import UserService
 from backend.core.config import settings
-from dotenv import load_dotenv
+
+from backend.repositories.user import UserRepository
+from backend.repositories.balance import BalanceRepository
+
+from backend.services.user import UserService
+from backend.services.balance import BalanceService
+
 from fastapi import Depends
 
 
@@ -15,6 +19,18 @@ def get_email_service():
         port=settings.VERIFY_PORT,
         password=settings.VERIFY_PASSWORD,
     )
+
+class BalanceDependecies:
+    @staticmethod
+    def get_balance_repository(db=Depends(get_db)):
+        return BalanceRepository(db)
+
+    @staticmethod
+    def get_balance_service(repository: BalanceRepository = Depends(get_balance_repository), redis=Depends(get_redis)):
+        return BalanceService(
+                repository=repository, 
+                redis=redis
+            )
 
 class UserDependencies:
     @staticmethod
