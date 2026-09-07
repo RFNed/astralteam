@@ -1,5 +1,6 @@
 import os, aiomysql, sys, random, aiofiles, redis, re
 import aiofiles
+from aioyookassa import YooKassa
 from fastapi import Depends, HTTPException, FastAPI, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -64,6 +65,16 @@ REDIS_CONFIG = {
 @asynccontextmanager
 async def lifespan(app: FastAPI):
 
+    # Yookassa
+    conn_yookassa = YooKassa(api_key=settings.PAYMENT_SYSTEM_SECRET_KEY, shop_id=settings.PAYMENT_SYSTEM_SHOP_ID)
+    try:
+        await conn_yookassa.get_me()
+    except:
+        raise logger.fatal("Yookassa can't connected!")
+
+    if IS_DEBUG:
+        logger.hint("Yookassa connected")
+    
     # Redis
     conn_redis = None
     try:
@@ -100,6 +111,7 @@ async def lifespan(app: FastAPI):
 
         app.state.db_pool = await aiomysql.create_pool(**DB_CONFIG)
         app.state.redis = await redis.asyncio.Redis(**REDIS_CONFIG)
+        app.state.yookassa = conn_yookassa
 
         if IS_DEBUG:
             logger.hint("Database and Redis pool, is created")
@@ -120,10 +132,15 @@ async def lifespan(app: FastAPI):
         app.state.db_pool.close()
         await app.state.db_pool.wait_closed()
 
+    if hasattr(app.state, "yookassa") and app.state.yookassa:
+        await app.state.yookassa.close()
+
     if hasattr(app.state, "redis") and app.state.redis:
         await app.state.redis.close()
 
     if IS_DEBUG:
+        if getattr(app.state, "yookassa", None) is not None:
+            logger.info("Connection with Yookassa is shutted down!")
         if getattr(app.state, "db_pool", None) is not None:
             logger.info("Database pool is disconnected!")
         if getattr(app.state, "redis", None) is not None:
@@ -134,13 +151,12 @@ async def lifespan(app: FastAPI):
 
 
 
-app = FastAPI(lifespan=lifespan, debug=IS_DEBUG, title="Backend Astral API", description="Backend API for Astral application", version="0.5.9", docs_url="/docs" if settings.DEBUG == "True" else None, redoc_url=None)
+app = FastAPI(lifespan=lifespan, debug=IS_DEBUG, title="Backend Astral API", description="Backend API for Astral application", version="0.6.0", docs_url="/docs" if settings.DEBUG == "True" else None, redoc_url=None)
 
 app.mount("/assets", StaticFiles(directory="backend/public"), name="public files")
 
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 app.include_router(register_router)
-app.include_router(balance_router)
 
 @app.get("/emailtest")
 async def test():

@@ -2,7 +2,6 @@ from fastapi.routing import APIRouter
 from fastapi import Request, Depends, HTTPException
 from backend.api.dependencies import BalanceDependecies
 from backend.services.balance import BalanceService
-from backend.schemas.balance import YooMoneyNotification
 
 router = APIRouter(tags=["Balance"], prefix="/balance")
 
@@ -13,10 +12,4 @@ async def create_invoice(amount: int, request: Request, service: BalanceService 
 
 @router.post("/webhook-yoomoney")
 async def webhook_yoomoney(request: Request):
-    try:
-        form = await request.form()
-        data = YooMoneyNotification(**dict(form))
-        print(data)
-        return {"status": "ok"}
-    except:
-        raise HTTPException(status_code=401)
+    return {}

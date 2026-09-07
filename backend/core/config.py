@@ -40,7 +40,8 @@ class Settings(BaseSettings):
 
     # Yoomoney
 
-    PAYMENT_SYSTEM_API_KEY: str
+    PAYMENT_SYSTEM_SHOP_ID: str
+    PAYMENT_SYSTEM_SECRET_KEY: str
 
     ###
 
