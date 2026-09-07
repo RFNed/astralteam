@@ -42,8 +42,6 @@ function Head() {
       } else {
         setHiddenHeadBar(false);
       }
-
-      console.log(currentScroll)
       lastScroll = currentScroll;
     }
     window.addEventListener("scroll", handleScroll)
@@ -74,7 +72,7 @@ function Head() {
               </div>
               <div className="user-circle">
                   <Link to="/auth" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}}><div className="non-registered" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}} title="Войти"/></Link>
-                  <div className="entered" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}}><img src="http://127.0.0.1:8000/assets/avatars/no_avatar.png" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}} /></div>
+                  <div className="entered" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}}><img src={`${import.meta.env.VITE_API_URL}/assets/avatars/no_avatar.png`} style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}} /></div>
               </div>
           </div>
       </header>

@@ -2,6 +2,8 @@ import { createContext, useState, useContext, type ReactNode, type SetStateActio
 import { parseBySession } from "../Api/client";
 import { APIError } from "../Api/class/APIError";
 
+const IS_DEBUG = import.meta.env.VITE_DEBUG
+
 const ERROR_MESSAGES: Record<string, string> = {
     INVALID_SESSION: "Сессия не валидна",
     NOT_EXISTS_SESSION: "Сессия не существует"
@@ -39,7 +41,8 @@ export default function AuthProvider({ children }: { children: ReactNode })
                                 ? "Ошибка сервера"
                                 : "Неизвестная ошибка"
                     }
-                    console.log(message)
+                    if (IS_DEBUG)
+                        console.log(message)
                 }
             }
             SetAuthLoading(false)
