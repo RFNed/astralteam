@@ -1,6 +1,5 @@
 import os, aiomysql, sys, random, aiofiles, redis, re
 import aiofiles
-from aioyookassa import YooKassa
 from fastapi import Depends, HTTPException, FastAPI, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -65,9 +64,6 @@ REDIS_CONFIG = {
 @asynccontextmanager
 async def lifespan(app: FastAPI):
 
-    # Yookassa
-    client = YooKassa(api_key=settings.PAYMENT_SYSTEM_SECRET_KEY, shop_id=settings.PAYMENT_SYSTEM_SHOP_ID)
-
     # Redis
     conn_redis = None
     try:
@@ -124,15 +120,10 @@ async def lifespan(app: FastAPI):
         app.state.db_pool.close()
         await app.state.db_pool.wait_closed()
 
-    if hasattr(app.state, "yookassa") and app.state.yookassa:
-        await app.state.yookassa.close()
-
     if hasattr(app.state, "redis") and app.state.redis:
         await app.state.redis.close()
 
     if IS_DEBUG:
-        if getattr(app.state, "yookassa") is not None:
-            logger.info("Yookassa client is disconnected!")
         if getattr(app.state, "db_pool", None) is not None:
             logger.info("Database pool is disconnected!")
         if getattr(app.state, "redis", None) is not None:
