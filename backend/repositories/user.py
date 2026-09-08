@@ -32,7 +32,7 @@ class UserRepository:
 
     async def auth(self, username: str):
         query = """
-            SELECT id, password_hash FROM users WHERE username = %s 
+            SELECT id, password_hash FROM users WHERE username = %s and email_verify = 1
         """
         await self.db.execute(query, (username,))
         result = await self.db.fetchone()

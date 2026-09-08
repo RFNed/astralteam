@@ -1,6 +1,7 @@
 from backend.api.dependencies import UserDependencies
 from backend.schemas.user import UserRegister, UserVerify, UserAuth
 from backend.services.user import UserService
+from backend.core.config import settings
 
 from fastapi.routing import APIRouter
 from fastapi import Depends, Response, Request, HTTPException, status
@@ -22,8 +23,8 @@ async def auth_user(data: UserAuth, response: Response, service: UserService = D
         key="session_id",
         value=result["session_id"],
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=True,
+        samesite="none",
         max_age=60 * 60 * 24 * 30
     )
     return {"detail": result["detail"]}

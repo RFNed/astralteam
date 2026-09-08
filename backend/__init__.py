@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from backend.core.logger import Logger
 from backend.core.email import EmailService
 from backend.core.config import settings
+
 # API
 from backend.api.user import router as register_router
 from backend.api.balance import router as balance_router
@@ -64,16 +65,6 @@ REDIS_CONFIG = {
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-
-    # Yookassa
-    conn_yookassa = YooKassa(api_key=settings.PAYMENT_SYSTEM_SECRET_KEY, shop_id=settings.PAYMENT_SYSTEM_SHOP_ID)
-    try:
-        await conn_yookassa.get_me()
-    except:
-        raise logger.fatal("Yookassa can't connected!")
-
-    if IS_DEBUG:
-        logger.hint("Yookassa connected")
     
     # Redis
     conn_redis = None
@@ -100,7 +91,7 @@ async def lifespan(app: FastAPI):
                     await cursor.execute(f"CREATE DATABASE {DB_NAME}")
                     async with aiofiles.open("backend/resource/database/structure/database.sql") as sql_database:
                         await cursor.execute(await sql_database.read())
-                        logger.info("Database is inited, dont change anything!")
+                        logger.info("Database is inited like 'astralteam', dont change anything!")
         except Exception as e:
             print(e)
 
@@ -108,6 +99,15 @@ async def lifespan(app: FastAPI):
 
         if IS_DEBUG:
             logger.hint("Database is checked, creating pool!")
+
+        # Yookassa
+        conn_yookassa = YooKassa(api_key=settings.PAYMENT_SYSTEM_SECRET_KEY, shop_id=settings.PAYMENT_SYSTEM_SHOP_ID)
+        try:
+            await conn_yookassa.get_me()
+        except:
+            raise logger.fatal("Yookassa can't connected!")
+        if IS_DEBUG:
+            logger.hint("Yookassa connected")
 
         app.state.db_pool = await aiomysql.create_pool(**DB_CONFIG)
         app.state.redis = await redis.asyncio.Redis(**REDIS_CONFIG)
@@ -157,6 +157,7 @@ app.mount("/assets", StaticFiles(directory="backend/public"), name="public files
 
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 app.include_router(register_router)
+app.include_router(balance_router)
 
 @app.get("/emailtest")
 async def test():

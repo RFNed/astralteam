@@ -2,6 +2,7 @@ from backend.core.email import EmailService
 from backend.core.database import get_db
 from backend.core.redis import get_redis
 from backend.core.config import settings
+from backend.core.yookassa import get_yookasssa
 
 from backend.repositories.user import UserRepository
 from backend.repositories.balance import BalanceRepository
@@ -26,9 +27,10 @@ class BalanceDependecies:
         return BalanceRepository(db)
 
     @staticmethod
-    def get_balance_service(repository: BalanceRepository = Depends(get_balance_repository), redis=Depends(get_redis)):
+    def get_balance_service(repository: BalanceRepository = Depends(get_balance_repository), redis=Depends(get_redis), yookassa=Depends(get_yookasssa)):
         return BalanceService(
-                repository=repository, 
+                repository=repository,
+                yookassa=yookassa, 
                 redis=redis
             )
 
