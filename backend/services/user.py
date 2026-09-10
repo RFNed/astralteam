@@ -133,7 +133,7 @@ class UserService:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"code": "INVALID_SESSION", "message": "Invalid session id"})
 
         result = await self.repository.parse_user(id_user)
-        result["avatar_url"] = json.loads(result["avatar_url"])
+        result["avatar_url"] = json.loads(result["avatar"])
         return {
             "code": "SUCCESS", 
             "message": "Parsed successfully", 

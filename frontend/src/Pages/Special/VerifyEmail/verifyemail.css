@@ -7,6 +7,7 @@
     border-radius: 30px;
     display: flex;
     flex-direction: column;
+    font-family: Unbounded;
     align-items: center;
     opacity: 0;
     transition: opacity 600ms ease;
@@ -16,7 +17,7 @@
         font-weight: bolder;
     }
     & .verify-email-message {
-        font-size: 20px;
+        font-size: 16px;
         margin-top: 30px;
     }
     &.visible {
