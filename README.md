@@ -19,14 +19,49 @@ Astral Team создаётся с целью объединить привычн
 
 Проект разрабатывается с нуля, включая клиентскую и серверную части.
 
+## ⚡ Установка
+
+Потребуется предустановленный Python (v3.14) и Node.js (v6, и NPM) на устройстве.
+
+Проще всего установить и создать виртуальное окружение для backend через uv.
+
+---
+### Backend
+#### Способ с установкой зависимостей через uv
+```bash
+uv sync
+```
+
+#### Способ через стандартный Python
+```bash
+python -m venv .venv
+source ./.venv/bin/activate
+pip install -r requirements.txt
+```
+---
+### Frontend
+#### Установка зависимостей для frontend
+```bash
+cd frontend
+npm ci
+```
+---
+### Запуск
+```bash
+npm run dev
+uv run uvicorn backend:app --reload # При установке через uv
+uvicorn backend:app --reload # При обычной установке
+# В разных терминалах
+```
+
 ## 🧩 Архитектура
 
 Astral Team разделён на несколько основных частей:
 
 ```text
 Astral Team
-├── Frontend/       # Клиентская часть
-└── Backend/        # Серверная часть
+├── frontend/       # Клиентская часть
+└── backend/        # Серверная часть
 ```
 
 ### Frontend
