@@ -5,7 +5,7 @@ from backend.core.email import EmailService
 from backend.schemas.user import UserRegister, UserVerify, UserAuth
 
 from email_validator import validate_email, EmailNotValidError
-from fastapi import HTTPException, status, Response
+from fastapi import HTTPException, status
 from secrets import token_hex, token_urlsafe
 
 class UserService:
@@ -135,12 +135,14 @@ class UserService:
         result = await self.repository.parse_user(id_user)
         result["avatar_url"] = json.loads(result["avatar"])
         return {
-            "code": "SUCCESS", 
-            "message": "Parsed successfully", 
-            "data": {
-                "id": result["id"],
-                "username": result["username"],
-                "avatar_url": result["avatar_url"],
-                "email": result["email"]
+            "detail": {
+                "code": "SUCCESS", 
+                "message": "Parsed successfully", 
+                "data": {
+                    "id": result["id"],
+                    "username": result["username"],
+                    "avatar_url": result["avatar_url"],
+                    "email": result["email"]
+                }
             }
         }

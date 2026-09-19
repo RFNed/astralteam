@@ -10,48 +10,62 @@ const ERROR_MESSAGES: Record<string, string> = {
 }
 
 interface AuthContextType {
-    Nickname: string,
-    setNickname: React.Dispatch<SetStateAction<any>>,
-    AvatarURL: string,
-    setAvatarURL: React.Dispatch<SetStateAction<any>> ,
+    data: ProfileData,
     AuthLoading: boolean,
-    Entered: boolean
+    Entered: boolean,
+    setAvatarURL: React.Dispatch<SetStateAction<string>>
+    loadSession: () => Promise<void>,
+    setUserName: React.Dispatch<SetStateAction<string>>;
+}
+
+interface ProfileData {
+    avatarURL: string,
+    username: string
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export default function AuthProvider({ children }: { children: ReactNode })
 {
-    const [Nickname, setNickname] = useState<string>("")
-    const [AvatarURL, setAvatarURL] = useState<string>("")
+    const [username, setUserName] = useState<string>("")
+    const [avatarURL, setAvatarURL] = useState<string>("")
     const [Entered, setEntered] = useState<boolean>(false)
     const [AuthLoading, SetAuthLoading] = useState<boolean>(true)
+    const loadSession = async () => {
+        try {
+            const data = await parseBySession()
+            console.log("SESSION DATA:", data);
+            setUserName(data.detail.data?.username ?? "null")
+            setEntered(true)
+        } catch (error) {
+            if (error instanceof APIError)
+            {
+                let message = ERROR_MESSAGES[error.code]
+                if (!message) {
+                    message = error.status === 500
+                            ? "Ошибка сервера"
+                            : "Неизвестная ошибка"
+                }
+                if (IS_DEBUG)
+                    console.log(message)
+            }
+        }
+        SetAuthLoading(false)
+    }
 
     useEffect(() => {
-        const Loader = async () => {
-            try {
-                await parseBySession()
-                setEntered(true)
-            } catch (error) {
-                if (error instanceof APIError)
-                {
-                    let message = ERROR_MESSAGES[error.code]
-                    if (!message) {
-                        message = error.status === 500
-                                ? "Ошибка сервера"
-                                : "Неизвестная ошибка"
-                    }
-                    if (IS_DEBUG)
-                        console.log(message)
-                }
-            }
-            SetAuthLoading(false)
-        }
-        Loader()
-    }, [])
+        loadSession();
+    }, [loadSession]);
+
+    loadSession()
+
+    const data: ProfileData = {
+        avatarURL,
+        username
+    }
 
     return (
-        <AuthContext.Provider value={{ Nickname, setNickname, AvatarURL, setAvatarURL, AuthLoading, Entered }}>
+        <AuthContext.Provider value={{ data, setAvatarURL, setUserName, AuthLoading, Entered, loadSession }}>
             {children}
         </AuthContext.Provider>
     )

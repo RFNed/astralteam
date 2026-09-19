@@ -5,6 +5,8 @@ import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../Api/client";
 import { APIError } from "../../Api/class/APIError";
+import { useAuth } from "../../Contexts/authContext";
+
 
 const ERROR_MESSAGES: Record<string, string> = {
     INCORRECT_PASS: "Неверный пароль",
@@ -13,6 +15,8 @@ const ERROR_MESSAGES: Record<string, string> = {
 
 export default function Auth() {
     const navigate = useNavigate()
+
+    const context = useAuth()
 
     const [login, setLogin] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -38,6 +42,7 @@ export default function Auth() {
             if (response.detail.code === "SUCCESS")
             {
                 ShowNotifyBox("Аккаунт авторизован", false)
+                await context.loadSession()
                 navigate("/")
             }
         } 

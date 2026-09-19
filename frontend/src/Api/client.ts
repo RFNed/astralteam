@@ -14,7 +14,7 @@ interface ParseUserInterface {
     id: string
     username: string
     avatar_url: {
-        "url": string
+        "path": string
         "type": string 
     }
     "email": string

@@ -32,7 +32,8 @@ async def auth_user(data: UserAuth, response: Response, service: UserService = D
 @router.get("/me")
 async def parse_by_session(request: Request, service: UserService = Depends(UserDependencies.get_user_service)):
     data = request.cookies.get("session_id")
-    print(data)
+    if settings.DEBUG:
+        print(data)
     if data is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"code": "NOT_EXISTS_SESSION", "message": "Not exists session"})
     return await service.parse_user_by_session_id(data)

@@ -23,6 +23,7 @@ import AuthProvider, { useAuth } from './Contexts/authContext.tsx'
 import LoadProvider from './Contexts/loadContext.tsx'
 import RegEmailNotify from './Pages/Auth/Reg/Email/regemailnotify.tsx';
 import VerifyEmail from './Pages/Special/VerifyEmail/verifyemail.tsx';
+import Profile from './Pages/Profile/profile.tsx'
 
 /* ------------------------------------------------------- */
 
@@ -52,7 +53,6 @@ function Head() {
   }, [])
 
   useEffect(() => {
-
   }, [AuthContext.AuthLoading])
 
   return (
@@ -73,6 +73,11 @@ function Head() {
               <div className="user-circle">
                   <Link to="/auth" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}}><div className="non-registered" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}} title="Войти"/></Link>
                   <div className="entered" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}}><img src={`${import.meta.env.VITE_API_URL}/assets/avatars/no_avatar.png`} style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}} /></div>
+              </div>
+              <div className="entered-window">
+                <div className='entered-window-head'>
+                  {AuthContext.data.username}
+                </div>
               </div>
           </div>
       </header>
@@ -101,6 +106,7 @@ function Pages() {
           <Route path="/registration" element={<Reg />} />
           <Route path="/registration/mail" element={<RegEmailNotify />} />
           <Route path="/registration/verify/:token" element={<VerifyEmail />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </motion.div>
     </AnimatePresence>
