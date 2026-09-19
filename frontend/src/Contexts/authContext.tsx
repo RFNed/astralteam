@@ -4,6 +4,8 @@ import { APIError } from "../Api/class/APIError";
 
 const IS_DEBUG = import.meta.env.VITE_DEBUG
 
+const API_URL = import.meta.env.VITE_API_URL
+
 const ERROR_MESSAGES: Record<string, string> = {
     INVALID_SESSION: "Сессия не валидна",
     NOT_EXISTS_SESSION: "Сессия не существует"
@@ -34,7 +36,8 @@ export default function AuthProvider({ children }: { children: ReactNode })
     const loadSession = async () => {
         try {
             const data = await parseBySession()
-            console.log("SESSION DATA:", data);
+            console.log(data)
+            setAvatarURL(data.detail.data?.avatar_url ?? `${API_URL}/assets/avatars/no_avatar.png`)
             setUserName(data.detail.data?.username ?? "null")
             setEntered(true)
         } catch (error) {
@@ -54,10 +57,8 @@ export default function AuthProvider({ children }: { children: ReactNode })
     }
 
     useEffect(() => {
-        loadSession();
-    }, [loadSession]);
-
-    loadSession()
+        loadSession()
+    }, []);
 
     const data: ProfileData = {
         avatarURL,

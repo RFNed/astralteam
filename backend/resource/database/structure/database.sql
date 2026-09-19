@@ -23,7 +23,7 @@ CREATE TABLE `users` (
   `password_hash` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email_verify` tinyint NOT NULL DEFAULT '0',
-  `avatar` json NOT NULL DEFAULT (_utf8mb4'{"type": "local", "path": "/resource/no_avatar.png"}'),
+  `avatar` json NOT NULL DEFAULT (_utf8mb4'{"type": "local", "path": "resource/avatars/no_avatar.png"}'),
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)

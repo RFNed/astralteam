@@ -13,11 +13,8 @@ interface APIResponse<T = undefined> {
 interface ParseUserInterface {
     id: string
     username: string
-    avatar_url: {
-        "path": string
-        "type": string 
-    }
-    "email": string
+    avatar_url: string
+    email: string
 }
 
 interface AuthInterface {

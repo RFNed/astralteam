@@ -3,6 +3,7 @@ from backend.repositories.user import UserRepository
 from backend.core.security import password_hasher
 from backend.core.email import EmailService
 from backend.schemas.user import UserRegister, UserVerify, UserAuth
+from backend.core.config import settings
 
 from email_validator import validate_email, EmailNotValidError
 from fastapi import HTTPException, status
@@ -134,6 +135,10 @@ class UserService:
 
         result = await self.repository.parse_user(id_user)
         result["avatar_url"] = json.loads(result["avatar"])
+        if result["avatar_url"]["type"] == "local":
+            result["avatar_url"] = f"{settings.BACKEND_URL}/{result["avatar_url"]["path"]}"
+        else:
+            result["avatar_url"] = result["avatar_url"]["path"]
         return {
             "detail": {
                 "code": "SUCCESS", 

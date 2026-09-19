@@ -1,5 +1,4 @@
 import './index.css'
-
 /* Important Imports */
 
 import { AnimatePresence, motion } from 'motion/react'
@@ -27,103 +26,107 @@ import Profile from './Pages/Profile/profile.tsx'
 
 /* ------------------------------------------------------- */
 
-
 function Head() {
-  const [HiddenHeadBar, setHiddenHeadBar] = useState<boolean>(false);
+  	const [HiddenHeadBar, setHiddenHeadBar] = useState<boolean>(false)
+  	const AuthContext = useAuth()
+  	useEffect(() => {
+		let lastScroll = window.scrollY
+		const handleScroll = () => {
+			const currentScroll = window.scrollY;
 
-  const AuthContext = useAuth()
-  useEffect(() => {
-    let lastScroll = window.scrollY
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
+			if (currentScroll > lastScroll && currentScroll > 150)
+			{
+			setHiddenHeadBar(true);
+			} else {
+			setHiddenHeadBar(false);
+			}
+			lastScroll = currentScroll;
+		}
 
-      if (currentScroll > lastScroll && currentScroll > 150)
-      {
-        setHiddenHeadBar(true);
-      } else {
-        setHiddenHeadBar(false);
-      }
-      lastScroll = currentScroll;
-    }
-    window.addEventListener("scroll", handleScroll)
+		window.addEventListener("scroll", handleScroll)
+		return () => {
+			window.removeEventListener("scroll", handleScroll)
+		}
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
+  	}, [])
 
-  useEffect(() => {
-  }, [AuthContext.AuthLoading])
+	useEffect(() => {
+	}, [AuthContext.AuthLoading])
 
-  return (
-    <>
-      <header>
-        <Helmet defaultTitle='Astral Team' />
-          <div className={`head-bar ${HiddenHeadBar ? "hidden" : ""}`}>
-              <Link className="logo" to="/">
-                  <img src="/logos/logo.png" alt="Logo" />
-              </Link>
+  	return (
+	<>
+	  	<header>
+			<Helmet defaultTitle='Astral Team' />
+		  	<div className={`head-bar ${HiddenHeadBar ? "hidden" : ""}`}>
+			  	<Link className="logo" to="/">
+					<img src="/logos/logo.png" alt="Logo" />
+			  	</Link>
 
-              <div className="catalogue">
-                  <Link to="/"><span>ЛАУНЧЕР</span></Link>
-                  <Link to="/games"><span>ИГРЫ</span></Link>
-                  <Link to="/news"><span>НОВОСТИ</span></Link>
-                  <Link to="/community"><span>СООБЩЕСТВО</span></Link>
-              </div>
-              <div className="user-circle">
-                  <Link to="/auth" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}}><div className="non-registered" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}} title="Войти"/></Link>
-                  <div className="entered" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}}><img src={`${import.meta.env.VITE_API_URL}/assets/avatars/no_avatar.png`} style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}} /></div>
-              </div>
-              <div className="entered-window">
-                <div className='entered-window-head'>
-                  {AuthContext.data.username}
-                </div>
-              </div>
-          </div>
-      </header>
+			  	<div className="catalogue">
+					<Link to="/"><span>ЛАУНЧЕР</span></Link>
+					<Link to="/games"><span>ИГРЫ</span></Link>
+					<Link to="/news"><span>НОВОСТИ</span></Link>
+					<Link to="/community"><span>СООБЩЕСТВО</span></Link>
+			  	</div>
+			  	<div className="user-circle">
+					<Link to="/auth" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}}>
+						<div className="non-registered" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}} title="Войти"/>
+					</Link>
+					<div className="entered" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}}>
+						<img src={`${AuthContext.data.avatarURL}`} style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}} />
+					</div>
+			  	</div>
+			  	
+				<div className="entered-window">
+					<div className='entered-window-head'>
+						{AuthContext.data.username}
+					</div>
+			  	</div>
+		  	</div>
+	  	</header>
 
-    </>
-  )
+	</>
+  	)
 }
 
 function Pages() {
   const location = useLocation()
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={location.pathname + location.search}
-        initial={{ opacity: 0, y: -8, filter: "blur(7px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        exit={{ opacity: 0, y: 14, filter: "blur(14px)" }}
-        transition={{ duration: 0.2 }}
-      >
-        <Routes location={location}>
-          <Route path="/" element={<Main />} />
-          <Route path="/games" element={<Game />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/registration" element={<Reg />} />
-          <Route path="/registration/mail" element={<RegEmailNotify />} />
-          <Route path="/registration/verify/:token" element={<VerifyEmail />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </motion.div>
-    </AnimatePresence>
+	<AnimatePresence mode="wait">
+		<motion.div
+		key={location.pathname + location.search}
+		initial={{ opacity: 0, y: -8, filter: "blur(7px)" }}
+		animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+		exit={{ opacity: 0, y: 14, filter: "blur(14px)" }}
+		transition={{ duration: 0.2 }}
+		>
+		<Routes location={location}>
+			<Route path="/" element={<Main />} />
+			<Route path="/games" element={<Game />} />
+			<Route path="/news" element={<News />} />
+			<Route path="/community" element={<Community />} />
+			<Route path="/auth" element={<Auth />} />
+			<Route path="/registration" element={<Reg />} />
+			<Route path="/registration/mail" element={<RegEmailNotify />} />
+			<Route path="/registration/verify/:token" element={<VerifyEmail />} />
+			<Route path="/profile" element={<Profile />} />
+		</Routes>
+		</motion.div>
+	</AnimatePresence>
   )
 }
 
 createRoot(document.getElementById('core')!).render(
-  <StrictMode>
-    <LoadProvider>
-      <AuthProvider>
-        <HelmetProvider>
-          <BrowserRouter>
-            <Head />
-            <Pages />
-          </BrowserRouter>
-        </HelmetProvider>
-      </AuthProvider>
-    </LoadProvider>
-  </StrictMode>,
+<StrictMode>
+	<LoadProvider>
+		<AuthProvider>
+			<HelmetProvider>
+				<BrowserRouter>
+					<Head />
+					<Pages />
+				</BrowserRouter>
+			</HelmetProvider>
+		</AuthProvider>
+	</LoadProvider>
+</StrictMode>,
 )
