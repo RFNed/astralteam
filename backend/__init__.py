@@ -148,7 +148,7 @@ async def lifespan(app: FastAPI):
 
 
 
-app = FastAPI(lifespan=lifespan, debug=IS_DEBUG, title="Backend Astral API", description="Backend API for Astral application", version="0.6.0", docs_url="/docs" if settings.DEBUG == "True" else None, redoc_url=None)
+app = FastAPI(lifespan=lifespan, debug=IS_DEBUG, title="Backend Astral API", description="Backend API for Astral application", version="0.7.0", docs_url="/docs" if settings.DEBUG == "True" else None, redoc_url=None)
 
 app.mount("/resource", StaticFiles(directory="backend/public"), name="public files")
 

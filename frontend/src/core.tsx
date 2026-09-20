@@ -23,6 +23,7 @@ import LoadProvider from './Contexts/loadContext.tsx'
 import RegEmailNotify from './Pages/Auth/Reg/Email/regemailnotify.tsx';
 import VerifyEmail from './Pages/Special/VerifyEmail/verifyemail.tsx';
 import Profile from './Pages/Profile/profile.tsx'
+import Topup from './Pages/Special/Balance/Topup/topup.tsx'
 
 /* ------------------------------------------------------- */
 
@@ -31,8 +32,12 @@ function Head() {
 	const userCircleRef = useRef<HTMLDivElement>(null)
 	const userWindowRef = useRef<HTMLDivElement>(null)
 	const [userMenu, setuserMenu] = useState<boolean>(false)
-
   	const AuthContext = useAuth()
+
+	const handleClick = () => {
+		setuserMenu(false)
+	}
+
   	useEffect(() => {
 		let lastScroll = window.scrollY
 		const handleScroll = () => {
@@ -62,7 +67,7 @@ function Head() {
 
 			const clickedUserCircle =
 				userCircleRef.current?.contains(target)
-
+ 
 			const clickedUserWindow =
 				userWindowRef.current?.contains(target)
 
@@ -108,9 +113,11 @@ function Head() {
 			  	</div>
 				<div className={`entered-window ${userMenu ? "open" : ""}`} ref={userWindowRef}>
 					<div className="entered-window-content">
-						<div className='entered-window-head'>
-							<img src={AuthContext.data.avatarURL} className="entered-window-head-avatar"/> {AuthContext.data.username}
-						</div>
+						<Link to="/profile" onClick={handleClick}>
+							<div className='entered-window-head'>
+								<img src={AuthContext.data.avatarURL} className="entered-window-head-avatar"/> {AuthContext.data.username}
+							</div>
+						</Link>
 						<div className="entered-window-buttons">
 							<div className="entered-window-button-market">
 								<span>Баланс</span>
@@ -121,9 +128,13 @@ function Head() {
 								</div>
 
 								<div className="entered-window-button-market-active">
-									<div className="entered-window-button-market-active-button">
-										пополнение
-									</div>
+
+									<Link to="/balance" onClick={handleClick}>
+										<div className="entered-window-button-market-active-button">
+											пополнение
+										</div>
+									</Link>
+
 									<div className="entered-window-button-market-active-button">
 										корзина
 									</div>
@@ -161,6 +172,7 @@ function Pages() {
 			<Route path="/registration/mail" element={<RegEmailNotify />} />
 			<Route path="/registration/verify/:token" element={<VerifyEmail />} />
 			<Route path="/profile" element={<Profile />} />
+			<Route path="/balance" element={<Topup />} />
 		</Routes>
 		</motion.div>
 	</AnimatePresence>

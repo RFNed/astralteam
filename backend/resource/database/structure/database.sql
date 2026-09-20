@@ -24,6 +24,7 @@ CREATE TABLE `users` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email_verify` tinyint NOT NULL DEFAULT '0',
   `avatar` json NOT NULL DEFAULT (_utf8mb4'{"type": "local", "path": "resource/avatars/no_avatar.png"}'),
+  `balance` decimal(19,4) NOT NULL DEFAULT '0.0000',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
