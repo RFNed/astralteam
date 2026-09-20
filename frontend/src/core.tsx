@@ -28,6 +28,9 @@ import Profile from './Pages/Profile/profile.tsx'
 
 function Head() {
   	const [HiddenHeadBar, setHiddenHeadBar] = useState<boolean>(false)
+
+	const [userMenu, setuserMenu] = useState<boolean>(false)
+
   	const AuthContext = useAuth()
   	useEffect(() => {
 		let lastScroll = window.scrollY
@@ -72,14 +75,37 @@ function Head() {
 					<Link to="/auth" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}}>
 						<div className="non-registered" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}} title="Войти"/>
 					</Link>
-					<div className="entered" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}}>
+					<div onClick={() => {
+						setuserMenu(userMenu ? false : true)
+					}} className="entered" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}}>
 						<img src={`${AuthContext.data.avatarURL}`} style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}} />
 					</div>
 			  	</div>
 			  	
-				<div className="entered-window">
-					<div className='entered-window-head'>
-						{AuthContext.data.username}
+				<div className={`entered-window ${userMenu ? "open" : ""}`}>
+					<div className="entered-window-content">
+						<div className='entered-window-head'>
+							<img src={AuthContext.data.avatarURL} className="entered-window-head-avatar"/> {AuthContext.data.username}
+						</div>
+						<div className="entered-window-buttons">
+							<div className="entered-window-button-market">
+								<span>Баланс</span>
+								
+								<div className="entered-window-button-market-balance">
+									<div>eye</div>
+									<div>0 ₽</div>
+								</div>
+
+								<div className="entered-window-button-market-active">
+									<div className="entered-window-button-market-active-button">
+										пополнение
+									</div>
+									<div className="entered-window-button-market-active-button">
+										корзина
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 			  	</div>
 		  	</div>

@@ -1,9 +1,4 @@
 @font-face {
-    font-family: Kanit-Black;
-    src: url("/fonts/Kanit/Kanit-Black.ttf");
-}
-
-@font-face {
     font-family: Unbounded-Bold;
     src: url("/fonts/Unbounded/Unbounded-Bold.ttf");
 }
@@ -12,16 +7,6 @@
     font-family: Unbounded;
     src: url("/fonts/Unbounded/Unbounded-Light.ttf");
     font-display: swap;
-}
-
-@font-face {
-    font-family: Kanit-Bold;
-    src: url("/fonts/Kanit/Kanit-Bold.ttf");
-}
-
-@font-face {
-    font-family: Schulevetica;
-    src: url("/fonts/Schulevetica/Schulevetica-Regular.otf");
 }
 
 body {
@@ -182,15 +167,79 @@ body {
     border-radius: 40px;
     position: absolute;
     right: 10px;
-    top: 90%;
+    top: 105%;
     font-family: 'Unbounded';
-    opacity: 1;
-    visibility: visible;
-    & .entered-window-head {
-        font-size: 19px;
-        margin-left: 30px;
-        margin-top: 20px;
+    opacity: 0;
+    visibility: hidden;
+    &.open {
+        opacity: 1;
+        visibility: visible;
     }
+    & .entered-window-head {
+        font-size: 16px;
+        margin-top: 20px;
+        display: flex;
+        justify-self: center;
+        align-items: center;
+        font-weight: bolder;
+        gap: 15px;
+        & .entered-window-head-avatar {
+            width: 50px;
+            border-radius: 15px;
+            flex-direction: row;
+        }
+    }
+    & .entered-window-buttons {
+        display: flex;
+        justify-self: center;
+        margin-top: 20px;
+        text-align: center;
+        font-size: 19px;
+        flex-direction: column;
+        gap: 10px;
+        & .entered-window-button-market {
+            flex-direction: column;
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            position: relative;
+            align-items: start;
+            background-color: rgb(41, 41, 41, 0.2);
+            margin-top: 20px;
+            width: 320px;
+            height: 130px;
+            border-radius: 20px;
+            & span {
+                margin-left: 20px;
+                margin-top: 10px;
+            }
+            & .entered-window-button-market-active {
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                width: 100%;
+                & .entered-window-button-market-active-button {
+                    background-color: rgb(97, 13, 175);
+                    padding: 4px;
+                    border-radius: 10px;
+                }
+            }
+            & .entered-window-button-market-balance {
+                margin-left: 30px;
+                display: flex;
+                gap: 10px;
+            }
+        }
+        & .entered-window-button {
+            width: 200px;
+            height: 30px;
+            padding: 5px;
+            border-radius: 10px;
+            background-color: rgb(36, 36, 36);
+        }
+    }
+
+
 }
 
 .on-development {
