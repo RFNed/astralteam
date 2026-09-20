@@ -2,7 +2,7 @@ import './index.css'
 /* Important Imports */
 
 import { AnimatePresence, motion } from 'motion/react'
-import { StrictMode, useState, useEffect } from 'react'
+import { StrictMode, useState, useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom'
 import { HelmetProvider, Helmet } from 'react-helmet-async';
@@ -28,7 +28,8 @@ import Profile from './Pages/Profile/profile.tsx'
 
 function Head() {
   	const [HiddenHeadBar, setHiddenHeadBar] = useState<boolean>(false)
-
+	const userCircleRef = useRef<HTMLDivElement>(null)
+	const userWindowRef = useRef<HTMLDivElement>(null)
 	const [userMenu, setuserMenu] = useState<boolean>(false)
 
   	const AuthContext = useAuth()
@@ -37,24 +38,46 @@ function Head() {
 		const handleScroll = () => {
 			const currentScroll = window.scrollY;
 
-			if (currentScroll > lastScroll && currentScroll > 150)
-			{
-			setHiddenHeadBar(true);
+			if (userMenu) {
+				setHiddenHeadBar(false);
+			} else if (currentScroll > lastScroll && currentScroll > 150) {
+				setHiddenHeadBar(true);
 			} else {
-			setHiddenHeadBar(false);
+				setHiddenHeadBar(false);
 			}
+
 			lastScroll = currentScroll;
-		}
+		};
 
 		window.addEventListener("scroll", handleScroll)
 		return () => {
 			window.removeEventListener("scroll", handleScroll)
 		}
 
-  	}, [])
+  	}, [userMenu])
 
 	useEffect(() => {
-	}, [AuthContext.AuthLoading])
+		const handleClickOutside = (event: MouseEvent) => {
+			const target = event.target as Node
+
+			const clickedUserCircle =
+				userCircleRef.current?.contains(target)
+
+			const clickedUserWindow =
+				userWindowRef.current?.contains(target)
+
+			if (!clickedUserCircle && !clickedUserWindow) {
+				setuserMenu(false)
+			}
+		}
+
+		document.addEventListener("click", handleClickOutside)
+
+		return () => {
+			document.removeEventListener("click", handleClickOutside)
+		}
+	}, [])
+
 
   	return (
 	<>
@@ -71,18 +94,19 @@ function Head() {
 					<Link to="/news"><span>НОВОСТИ</span></Link>
 					<Link to="/community"><span>СООБЩЕСТВО</span></Link>
 			  	</div>
-			  	<div className="user-circle">
+			  	<div className="user-circle" ref={userCircleRef}>
+					
 					<Link to="/auth" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}}>
 						<div className="non-registered" style={{"visibility": `${(!AuthContext.Entered) ? "visible" : "hidden"}`}} title="Войти"/>
 					</Link>
+
 					<div onClick={() => {
-						setuserMenu(userMenu ? false : true)
+						setuserMenu(prev => !prev)
 					}} className="entered" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}}>
 						<img src={`${AuthContext.data.avatarURL}`} style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}} />
 					</div>
 			  	</div>
-			  	
-				<div className={`entered-window ${userMenu ? "open" : ""}`}>
+				<div className={`entered-window ${userMenu ? "open" : ""}`} ref={userWindowRef}>
 					<div className="entered-window-content">
 						<div className='entered-window-head'>
 							<img src={AuthContext.data.avatarURL} className="entered-window-head-avatar"/> {AuthContext.data.username}
@@ -109,6 +133,7 @@ function Head() {
 					</div>
 			  	</div>
 		  	</div>
+			  	
 	  	</header>
 
 	</>

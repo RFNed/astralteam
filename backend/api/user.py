@@ -1,7 +1,7 @@
 from backend.api.dependencies import UserDependencies
 from backend.schemas.user import UserRegister, UserVerify, UserAuth
 from backend.services.user import UserService
-from backend.core.config import settings
+from backend.core.config import settings, logger
 
 from fastapi.routing import APIRouter
 from fastapi import Depends, Response, Request, HTTPException, status
@@ -33,7 +33,7 @@ async def auth_user(data: UserAuth, response: Response, service: UserService = D
 async def parse_by_session(request: Request, service: UserService = Depends(UserDependencies.get_user_service)):
     data = request.cookies.get("session_id")
     if settings.DEBUG:
-        print(data)
+        logger.hint(f"received: {data}")
     if data is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"code": "NOT_EXISTS_SESSION", "message": "Not exists session"})
     return await service.parse_user_by_session_id(data)

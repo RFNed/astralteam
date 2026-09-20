@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+from backend.core.logger import Logger
 class Settings(BaseSettings):
 
     # Debug
@@ -47,4 +47,5 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
+logger = Logger("Backend")
 settings = Settings()

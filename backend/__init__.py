@@ -6,9 +6,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from backend.core.logger import Logger
 from backend.core.email import EmailService
-from backend.core.config import settings
+from backend.core.config import settings, logger
 
 # API
 from backend.api.user import router as register_router
@@ -20,8 +19,6 @@ if sys.platform == "win32":
     sys.stderr.reconfigure(encoding='utf-8')
 
 #######-----++-----##########
-
-logger = Logger("Backend")
 
 test_email = EmailService(
     hostname=settings.VERIFY_HOSTNAME,
