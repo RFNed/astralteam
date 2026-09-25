@@ -10,8 +10,8 @@ export default function Topup() {
         </Helmet>
 
         <div className="topup-block">
-            <span className="topup-block__header">Пополните свой счет через сервис ЮKassa, используя СБП или пластиковую карту</span>
-
+            <div className="topup-block__header">😺 Пополните свой счет через сервис ЮKassa, используя СБП или пластиковую карту</div>
+            
         </div>
         
         </>

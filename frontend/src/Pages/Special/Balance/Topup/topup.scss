@@ -5,8 +5,15 @@
     justify-self: center;
     margin-top: 40px;
     border-radius: 24px;
+    
     font-family: Unbounded;
     &__header {
-        font-size: 24px;
+        background-color: rgba(165, 165, 165, .54);
+        font-size: 23px;
+        display: flex;
+        font-weight: bold;
+        justify-self: center;
+        margin-top: 70px;
+        padding: 30px;
     }
 }
