@@ -74,7 +74,8 @@ export default function Reg() {
             percentage === 100 ? 3 :
             2
         )
-        console.log(LevelPassword)
+        if (IS_DEBUG)
+            console.log(`Password difficulty = ${LevelPassword}`)
     }
 
     const handle_data = () => {
