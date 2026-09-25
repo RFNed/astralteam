@@ -1,4 +1,4 @@
-import "./games.css"
+import "./games.scss"
 import { onDevelopment } from "../../Modules/other"
 export default function Game() {
     return (

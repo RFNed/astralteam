@@ -1,4 +1,4 @@
-import "./regemailnotify.css"
+import "./regemailnotify.scss"
 
 export default function RegEmailNotify()
 {

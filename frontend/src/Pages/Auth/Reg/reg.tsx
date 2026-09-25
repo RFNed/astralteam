@@ -1,4 +1,4 @@
-import "./reg.css"
+import "./reg.scss"
 
 import { Helmet } from "react-helmet-async";
 import { useState, type ChangeEvent } from "react"

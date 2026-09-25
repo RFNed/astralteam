@@ -1,4 +1,4 @@
-import "./auth.css"
+import "./auth.scss"
 
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";

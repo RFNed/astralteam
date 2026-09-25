@@ -1,4 +1,4 @@
-import "./LoadingPage.css"
+import "./LoadingPage.scss"
 
 interface LoadingPageType {
     Text: string,

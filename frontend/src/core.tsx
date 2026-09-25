@@ -1,6 +1,6 @@
-import './index.css'
-/* Important Imports */
+import './index.scss'
 
+/* Important Imports */
 import { AnimatePresence, motion } from 'motion/react'
 import { StrictMode, useState, useEffect, useRef } from 'react'
 import { createRoot } from 'react-dom/client'

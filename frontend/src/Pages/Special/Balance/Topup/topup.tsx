@@ -1,4 +1,4 @@
-import "./topup.css"
+import "./topup.scss"
 import { Helmet } from "react-helmet-async"
 
 export default function Topup() {
@@ -10,7 +10,8 @@ export default function Topup() {
         </Helmet>
 
         <div className="topup-block">
-            
+            <span className="topup-block__header">Пополните свой счет через сервис ЮKassa, используя СБП или пластиковую карту</span>
+
         </div>
         
         </>
