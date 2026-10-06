@@ -108,8 +108,9 @@ function Head() {
 					<div onClick={() => {
 						setuserMenu(prev => !prev)
 					}} className="entered" style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}}>
-						<img src={`${AuthContext.data.avatarURL}`} style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`}} />
+						<img src={`${AuthContext.data.avatarURL}`} style={{"visibility": `${AuthContext.Entered ? "visible" : "hidden"}`, "userSelect": "none", "WebkitUserSelect": "none"}} />
 					</div>
+
 			  	</div>
 				<div className={`entered-window ${userMenu ? "open" : ""}`} ref={userWindowRef}>
 					<div className="entered-window-content">
