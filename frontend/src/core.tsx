@@ -15,15 +15,16 @@ import Community from './Pages/Community/community'
 import News from './Pages/News/news'
 import Auth from './Pages/Auth/auth'
 import Reg from './Pages/Auth/Reg/reg.tsx'
+import RegEmailNotify from './Pages/Auth/Reg/Email/regemailnotify';
+import VerifyEmail from './Pages/Special/VerifyEmail/verifyemail';
+import Profile from './Pages/Profile/profile'
+import Topup from './Pages/Special/Balance/Topup/topup'
+import NotFound from './Pages/Special/NotFound/notfound.tsx'
 
 /* Providers */
 
-import AuthProvider, { useAuth } from './Contexts/authContext.tsx'
-import LoadProvider from './Contexts/loadContext.tsx'
-import RegEmailNotify from './Pages/Auth/Reg/Email/regemailnotify.tsx';
-import VerifyEmail from './Pages/Special/VerifyEmail/verifyemail.tsx';
-import Profile from './Pages/Profile/profile.tsx'
-import Topup from './Pages/Special/Balance/Topup/topup.tsx'
+import AuthProvider, { useAuth } from './Contexts/authContext'
+import LoadProvider from './Contexts/loadContext'
 
 /* ------------------------------------------------------- */
 
@@ -172,8 +173,9 @@ function Pages() {
 			<Route path="/registration" element={<Reg />} />
 			<Route path="/registration/mail" element={<RegEmailNotify />} />
 			<Route path="/registration/verify/:token" element={<VerifyEmail />} />
-			<Route path="/profile" element={<Profile />} />
+			<Route path="/profile/:token" element={<Profile />} />
 			<Route path="/balance" element={<Topup />} />
+			<Route path="*" element={<NotFound />} />
 		</Routes>
 		</motion.div>
 	</AnimatePresence>

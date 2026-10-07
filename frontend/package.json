@@ -1,7 +1,7 @@
 {
   "name": "astral",
   "private": true,
-  "version": "0.7.0",
+  "version": "0.8.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -29,5 +29,8 @@
     "sass-embedded": "^1.105.0",
     "typescript": "~6.0.2",
     "vite": "^8.1.1"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true
   }
 }

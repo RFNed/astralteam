@@ -7,7 +7,8 @@ import { register } from "../../../Api/client";
 import { useLoaded } from "../../../Contexts/loadContext";
 import { sleep, IS_DEBUG } from "../../../Modules/other";
 import { APIError } from "../../../Api/class/APIError";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useAuth } from "../../../Contexts/authContext";
 
 const ERROR_MESSAGES: Record<string, string> = {
     INVALID_EMAIL: "Электронная почта не валидна, или занята",
@@ -24,7 +25,8 @@ const PASSWORD_LEVELS = [
 export default function Reg() {
     const { IsLoadedScreen, SetIsLoadedScreen } = useLoaded()
     const navigate = useNavigate()
-
+    const context = useAuth()
+    
     const [Email, SetEmail] = useState<string>("")
     const [Username, SetUsername] = useState<string>("")
     const [Password, SetPassword] = useState<string>("")
@@ -36,6 +38,11 @@ export default function Reg() {
 
     const [HintPassword, setHintPassword] = useState<string[]>([]);
     const [LevelPassword, setLevelPassword] = useState<number>(0);
+
+    if (context.Entered == true) {
+        return <Navigate to="/" replace />;
+    }
+
     const ShowNotifyBox = (text: string, isError: boolean) => {
         setNotifyBoxText(text)
         setIsNotifyError(isError)

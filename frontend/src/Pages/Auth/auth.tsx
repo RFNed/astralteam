@@ -2,7 +2,7 @@ import "./auth.scss"
 
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { auth } from "../../Api/client";
 import { APIError } from "../../Api/class/APIError";
 import { useAuth } from "../../Contexts/authContext";
@@ -15,15 +15,16 @@ const ERROR_MESSAGES: Record<string, string> = {
 
 export default function Auth() {
     const navigate = useNavigate()
-
     const context = useAuth()
-
     const [login, setLogin] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-
     const [NotifyBoxText, setNotifyBoxText] = useState<string>("");
     const [VisibleBoxText, setVisibleBoxText] = useState<boolean>(false);
     const [IsNotifyError, setIsNotifyError] = useState<boolean>(false); 
+
+    if (context.Entered == true) {
+        return <Navigate to="/" replace />;
+    }
 
     const ShowNotifyBox = (text: string, isError: boolean) => {
         setNotifyBoxText(text)

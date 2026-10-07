@@ -1,12 +1,19 @@
-import "./profile.scss"
+import "./profile.scss";
 
-export default function Profile()
-{
+import { Helmet } from "react-helmet-async";
+
+export default function Profile() {
     return (
         <>
-        
-        123
+            <Helmet>
+                <title>Профиль</title>
+            </Helmet>
 
+            <div className="profile-box">
+                <div className="profile-box__head">
+                    <div className="profile-box__avatar"></div>
+                </div>
+            </div>
         </>
-    )
+    );
 }
