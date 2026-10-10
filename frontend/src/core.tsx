@@ -14,12 +14,12 @@ import Game from './Pages/Games/games'
 import Community from './Pages/Community/community'
 import News from './Pages/News/news'
 import Auth from './Pages/Auth/auth'
-import Reg from './Pages/Auth/Reg/reg.tsx'
+import Reg from './Pages/Auth/Reg/reg'
 import RegEmailNotify from './Pages/Auth/Reg/Email/regemailnotify';
 import VerifyEmail from './Pages/Special/VerifyEmail/verifyemail';
 import Profile from './Pages/Profile/profile'
 import Topup from './Pages/Special/Balance/Topup/topup'
-import NotFound from './Pages/Special/NotFound/notfound.tsx'
+import NotFound from './Pages/Special/NotFound/notfound'
 
 /* Providers */
 
