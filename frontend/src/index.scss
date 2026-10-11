@@ -173,6 +173,8 @@ body {
     visibility: hidden;
     transition: opacity 1400ms cubic-bezier(0.075, 0.82, 0.165, 1), visible 100ms cubic-bezier(0.075, 0.82, 0.165, 1);
     transform: translateY(5%);
+    justify-content: center;
+    display: flex;
 
     & a {
         text-decoration: none;
@@ -187,9 +189,8 @@ body {
     }
     & .entered-window-head {
         font-size: 16px;
-        margin-top: 20px;
         display: flex;
-        justify-self: center;
+        margin: 25px 0px 0px 20px;
         align-items: center;
         font-weight: bolder;
         gap: 15px;

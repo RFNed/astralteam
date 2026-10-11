@@ -31,7 +31,8 @@ class EmailService:
         async with SMTP(
             hostname=self.hostname,
             port=self.port,
-            start_tls=True
+            start_tls=True,
+            use_tls=False
         ) as smtp:
             await smtp.login(
                 self.username,

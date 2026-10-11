@@ -85,10 +85,11 @@ async def lifespan(app: FastAPI):
                 await cursor.execute('select schema_name from information_schema.schemata where schema_name = %s', (DB_NAME,))
                 result = await cursor.fetchone() is not None
                 if not result:
-                    await cursor.execute(f"CREATE DATABASE {DB_NAME}")
-                    async with aiofiles.open("backend/resource/database/structure/database.sql") as sql_database:
-                        await cursor.execute(await sql_database.read())
-                        logger.info("Database is inited like 'astralteam', dont change anything!")
+                    await cursor.execute(f"CREATE DATABASE {DB_NAME};")
+                    logger.info(f"Database is inited like {DB_NAME}, please import database from backend/resource/database/structure/database.sql into your MySQL")
+                    logger.info("And restart backend!")
+                    logger.info("Goodbye")
+                    os._exit(1)
         except Exception as e:
             print(e)
 

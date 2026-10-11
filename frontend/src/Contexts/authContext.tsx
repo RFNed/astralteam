@@ -21,8 +21,9 @@ interface AuthContextType {
 }
 
 interface ProfileData {
+    id: string
     avatarURL: string,
-    username: string
+    username: string,
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -31,12 +32,14 @@ export default function AuthProvider({ children }: { children: ReactNode })
 {
     const [username, setUserName] = useState<string>("")
     const [avatarURL, setAvatarURL] = useState<string>("")
+    const [id, setuserId] = useState<string>("")
     const [Entered, setEntered] = useState<boolean>(false)
     const [AuthLoading, SetAuthLoading] = useState<boolean>(true)
     const loadSession = async () => {
         try {
             const data = await parseBySession()
             console.log(data)
+            setuserId(data.detail.data?.id ?? "null")
             setAvatarURL(data.detail.data?.avatar_url ?? `${API_URL}/assets/avatars/no_avatar.png`)
             setUserName(data.detail.data?.username ?? "null")
             setEntered(true)
@@ -61,6 +64,7 @@ export default function AuthProvider({ children }: { children: ReactNode })
     }, []);
 
     const data: ProfileData = {
+        id,
         avatarURL,
         username
     }

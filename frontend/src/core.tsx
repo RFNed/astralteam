@@ -115,7 +115,7 @@ function Head() {
 			  	</div>
 				<div className={`entered-window ${userMenu ? "open" : ""}`} ref={userWindowRef}>
 					<div className="entered-window-content">
-						<Link to="/profile" onClick={handleClick}>
+						<Link to={`/profile/${AuthContext.data.id}`} onClick={handleClick}>
 							<div className='entered-window-head'>
 								<img src={AuthContext.data.avatarURL} className="entered-window-head-avatar"/> {AuthContext.data.username}
 							</div>
