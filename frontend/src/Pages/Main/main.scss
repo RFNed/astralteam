@@ -1,7 +1,7 @@
+
 .astral-body {
     width: 90%;
-    margin-top: 30px;
-    justify-self: center;
+    margin: 30px auto auto auto;
     background: linear-gradient(90deg, rgb(8, 8, 8), rgb(32, 32, 32), rgb(8, 8, 8));
     border-radius: 100px;
     height: 300px;
@@ -65,7 +65,7 @@
     border-radius: 50px;
     padding: 20px;
     height: 900px;
-    justify-self: center;
+    margin: 30px auto auto auto;
     align-items: center;
     display: flex;
     flex-direction: column;
