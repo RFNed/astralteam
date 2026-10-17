@@ -1,23 +1,26 @@
 import os, aiomysql, sys, random, aiofiles, redis, re
 import aiofiles
+
 from aioyookassa import YooKassa
-from fastapi import Depends, HTTPException, FastAPI, status
+
+from fastapi import HTTPException, FastAPI, status, Request
 from fastapi.staticfiles import StaticFiles
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from backend.core.email import EmailService
 from backend.core.config import settings, logger
-
+from backend.core.exception_handlers import validation_exception_handler
 # API
 from backend.api.user import router as register_router
 from backend.api.balance import router as balance_router
-####### On Windows ##########
 
+####### On Windows ##########
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding='utf-8')
     sys.stderr.reconfigure(encoding='utf-8')
-
 #######-----++-----##########
 
 test_email = EmailService(
@@ -149,10 +152,15 @@ async def lifespan(app: FastAPI):
 
 
 
-app = FastAPI(lifespan=lifespan, debug=IS_DEBUG, title="Backend Astral API", description="Backend API for Astral application", version="0.8.0", docs_url="/docs" if settings.DEBUG == "True" else None, redoc_url=None)
+app = FastAPI(lifespan=lifespan, 
+              debug=IS_DEBUG, 
+              title="Backend Astral API", 
+              description="Backend API for Astral application", 
+              version="0.8.0", 
+              docs_url="/docs" if settings.DEBUG == "True" else None, redoc_url="/redoc" if settings.DEBUG == "True" else None)
 
 app.mount("/resource", StaticFiles(directory="backend/public"), name="public files")
-
+app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 app.include_router(register_router)
 app.include_router(balance_router)

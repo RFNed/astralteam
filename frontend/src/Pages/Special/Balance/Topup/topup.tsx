@@ -13,7 +13,9 @@ export default function Topup() {
         <div className="topup-block">
             <div className="topup-block__header">😺 Пополните свой счет через сервис ЮKassa, используя СБП или пластиковую карту</div>
 	        
-            <div className="topup-bblock__block-balance-input"></div>
+            <div className="topup-block__block-balance-input">
+                
+            </div>
          
 	    </div>
         

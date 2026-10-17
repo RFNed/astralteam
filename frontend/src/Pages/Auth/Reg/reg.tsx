@@ -3,24 +3,19 @@ import "./reg.scss"
 import { Helmet } from "react-helmet-async";
 import { useState, type ChangeEvent } from "react"
 
-import { register } from "../../../Api/client";
-import { useLoaded } from "../../../Contexts/loadContext";
-import { sleep, IS_DEBUG } from "../../../Modules/other";
-import { APIError } from "../../../Api/class/APIError";
-import { useNavigate, Navigate } from "react-router-dom";
-import { useAuth } from "../../../Contexts/authContext";
+import { checkPassword, PASSWORD_LEVELS } from "../../../Api/password"
+import { register } from "../../../Api/client"
+import { useLoaded } from "../../../Contexts/loadContext"
+import { sleep, IS_DEBUG } from "../../../Modules/other"
+import { APIError } from "../../../Api/class/APIError"
+import { useNavigate, Navigate } from "react-router-dom"
+import { useAuth } from "../../../Contexts/authContext"
 
 const ERROR_MESSAGES: Record<string, string> = {
     INVALID_EMAIL: "Электронная почта не валидна, или занята",
-    USERNAME_TAKEN: "Пользователь с таким логином/почтой уже существует",
+    ACCOUNT_ALREADY_EXISTS: "Пользователь с таким логином/почтой уже существует",
     REGDATA_REQUIRED: "Заполните данные в поля",
 }
-const PASSWORD_LEVELS = [
-    "",
-    "bad",
-    "normal",
-    "perfect"
-]
 
 export default function Reg() {
     const { IsLoadedScreen, SetIsLoadedScreen } = useLoaded()
@@ -32,15 +27,17 @@ export default function Reg() {
     const [Password, SetPassword] = useState<string>("")
     const [TwoPassword, SetTwoPassword] = useState<string>("")
 
-    const [NotifyBoxText, setNotifyBoxText] = useState<string>("");
-    const [VisibleBoxText, setVisibleBoxText] = useState<boolean>(false);
-    const [IsNotifyError, setIsNotifyError] = useState<boolean>(false); 
+    const [NotifyBoxText, setNotifyBoxText] = useState<string>("")
+    const [VisibleBoxText, setVisibleBoxText] = useState<boolean>(false)
+    const [IsNotifyError, setIsNotifyError] = useState<boolean>(false)
 
-    const [HintPassword, setHintPassword] = useState<string[]>([]);
-    const [LevelPassword, setLevelPassword] = useState<number>(0);
+    const [HintPassword, setHintPassword] = useState<string[]>([])
+    const [LevelPassword, setLevelPassword] = useState<number>(0)
+
+    const isFormFilled = Boolean(Email.trim() && Username.trim() && Password.trim())
 
     if (context.Entered == true) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/" replace />
     }
 
     const ShowNotifyBox = (text: string, isError: boolean) => {
@@ -50,109 +47,86 @@ export default function Reg() {
     }
 
     const handle_password = (e: ChangeEvent<HTMLInputElement>) => {
-        SetPassword(e.target.value)
         
-        const password_temp = e.target.value
-        
+        const password = e.target.value
+        const result = checkPassword(password)
+
+        SetPassword(password)
+        setHintPassword(result.hints)
+        setLevelPassword(result.level)
         setVisibleBoxText(false)
 
-        const hasLetters = /[a-zA-Z]/.test(password_temp)
-        const hasNumbers = /\d/.test(password_temp)
-        const hasSpecial = /[^a-zA-Z0-9]/.test(password_temp)
-        const hasInvalidChars = /[^\x00-\x7F]/.test(password_temp)
-        const hasSpaces = /\s/.test(password_temp)
-        const length = password_temp.trim().length
-        const hints: string[] = [
-            length < 7 && "Добавьте больше символов",
-            hasSpaces && "Уберите пробелы",
-            hasInvalidChars && "Используйте только латиницу",
-            !hasNumbers && "Добавьте цифры",
-            (!hasLetters && !hasInvalidChars) && "Добавьте латиницу",
-            !hasSpecial && "Добавьте специальные символы"
-        ].filter((hint): hint is string => Boolean(hint))
-        setHintPassword(hints)
-        
-        const percentage = (100-(hints.length / 6) * 100)
-        console.log(percentage)
-        setLevelPassword(
-            hasInvalidChars ? 1 :
-            percentage < 50 ? 1 :
-            percentage < 75 ? 2 :
-            percentage === 100 ? 3 :
-            2
-        )
         if (IS_DEBUG)
             console.log(`Password difficulty = ${LevelPassword}`)
     }
 
-    const handle_data = () => {
-        if (Email.trim() && Username.trim() && Password.trim())
-            return true
-        else
-            return false
+    const validateRegistration = (): string | null => {
+        if (!Email.trim() || !Username.trim() || !Password) {
+            return "Введите все данные в поля"
+        }
+
+        if (LevelPassword < 3) {
+            return "Усложните пароль"
+        }
+
+        if (TwoPassword !== Password) {
+            return "Пароли не совпадают"
+        }
+
+        if (Username.trim().length < 5) {
+            return "Логин должен быть не менее 5 символов"
+        }
+
+        if (Password.length < 7) {
+            return "Пароль должен быть не менее 7 символов"
+        }
+        return null
     }
 
     const handle_reg = async () => {
         if (IsLoadedScreen) return
-        if (!(Email.trim() && Username.trim() && Password.trim()))
-        {
-            ShowNotifyBox("Введите все данные в поля", true)
-            return
+
+        const error = validateRegistration()
+
+        if (error) {
+            ShowNotifyBox(error, true)
+            return;
         }
-        if (!(LevelPassword > 2))
-        {
-            ShowNotifyBox("Усложните пароль", false)
-            return
-        }
-        if (TwoPassword !== Password)
-        {
-            ShowNotifyBox("Пароли не совпадают", true)
-            return
-        }
-        if (Username.trim().length <= 6)
-        {
-            ShowNotifyBox("Логин должен быть более 6 символов", false)
-            return
-        }
-        if (Password.trim().length <= 6)
-        {
-            ShowNotifyBox("Пароль должен быть более 6 символов", false)
-            return
-        }
-        
+
         SetIsLoadedScreen(true)
 
-        {await sleep(500)}
-        try 
-        {
-            const result = await register({ email: Email, username: Username, password: Password })
-            if (result.detail.code === "SUCCESS")
-            {
-                if (IS_DEBUG)
-                    await sleep(1500)
+        try {
+            await sleep(500);
+
+            const result = await register({
+                email: Email.trim(),
+                username: Username.trim(),
+                password: Password,
+            });
+
+            if (result.detail.code === "SUCCESS") {
+                if (IS_DEBUG) await sleep(1500)
                 ShowNotifyBox("Успешно", false)
                 navigate("/registration/mail")
-                
             }
-        } catch (error)
-        {
-            if (error instanceof APIError)
-            {
-                let message = ERROR_MESSAGES[error.code]
-                if (!message)
-                {
-                    message = error.status === 500
-                            ? "Ошибка сервера, попробуйте позже"
-                            : "Неизвестная ошибка"
-                }
+        } catch (error) {
+            if (error instanceof APIError) {
+                const message =
+                    ERROR_MESSAGES[error.code] ??
+                    (error.status === 500
+                        ? "Ошибка сервера, попробуйте позже"
+                        : "Неизвестная ошибка")
+
                 ShowNotifyBox(message, true)
             } else {
-                console.log(error)
-                ShowNotifyBox("Непредвиденная ошибка, взгляните в консоль", true)
+                console.error(error)
+                ShowNotifyBox("Непредвиденная ошибка", true)
             }
+        } finally {
+            SetIsLoadedScreen(false)
         }
-        SetIsLoadedScreen(false)
     }
+    
     return (
         <>
         <Helmet>
@@ -181,7 +155,7 @@ export default function Reg() {
                     <input type="password" placeholder="повторите пароль" value={TwoPassword} onChange={(e) => {SetTwoPassword(e.target.value); setVisibleBoxText(false)}}/>
                     <div className="password-level"></div>
                 </div>
-                <button onClick={handle_reg} className={handle_data() ? "reg-valid" : "reg-invalid"}>отправить</button>
+                <button onClick={handle_reg} className={isFormFilled ? "reg-valid" : "reg-invalid"}>отправить</button>
                 <div className={`reg-info ${VisibleBoxText ? "visible" : ""}`}  style={{
                     
                     // Background color

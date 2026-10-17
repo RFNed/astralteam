@@ -14,6 +14,11 @@
         padding: 30px;
         text-align: center;
         user-select: none;
+    }
 
+    &__block-balance-input {
+        background-color: red;
+        width: 100%;
+        height: 100px;
     }
 }

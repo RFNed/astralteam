@@ -2,7 +2,7 @@ import json
 from backend.repositories.user import UserRepository
 from backend.core.security import password_hasher
 from backend.core.email import EmailService
-from backend.schemas.user import UserRegister, UserVerify, UserAuth
+from backend.schemas.user import UserRegister, UserVerify, UserCredentials
 from backend.core.config import settings
 
 from email_validator import validate_email, EmailNotValidError
@@ -16,59 +16,17 @@ class UserService:
         self.email = email
 
     async def register(self, data: UserRegister):
-        if not data.username or not data.email or not data.password:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail={
-                    "code": "REGDATA_REQUIRED",
-                    "message": "Data required for registration",
-                },
-            )
-        if len(data.username) <= 6:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail={
-                    "code": "INCORRECT_USERNAME_LENGTH",
-                    "message": "Username must be more than 6 characters",
-                },
-            )
-        if len(data.password) <= 6:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail={
-                    "code": "INCORRECT_PASSWORD_LENGTH",
-                    "message": "Password must be more than 6 characters",
-                },
-            )
 
-        if not data.username.isascii() or not data.password.isascii():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail={
-                    "code": "INCORRECT_ASCII_PASSWORD_USERNAME",
-                    "message": "Password and username must be ASCII",
-                },
-            )
-        try:
-            validate_email(data.email)
-        except EmailNotValidError:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail={
-                    "code": "INVALID_EMAIL",
-                    "message": "Invalid email",
-                },
-            )
-        
         exists = await self.repository.check_account_exists(
             username=data.username,
             email=data.email,
         )
+        
         if exists:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail={
-                    "code": "USERNAME_TAKEN",
+                    "code": "ACCOUNT_ALREADY_EXISTS",
                     "message": "Username or email is already taken",
                 },
             )
@@ -103,7 +61,7 @@ class UserService:
             }
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail={"code": "INVALID_TOKEN", "message": "Token not exists"})
 
-    async def auth(self, data: UserAuth):
+    async def auth(self, data: UserCredentials):
         user = await self.repository.auth(data.username)
         if user is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail={"code": "ACCOUNT_NOT_EXISTS", "message": "Account not exists, or not verified"})

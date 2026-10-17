@@ -1,5 +1,5 @@
 from backend.api.dependencies import UserDependencies
-from backend.schemas.user import UserRegister, UserVerify, UserAuth
+from backend.schemas.user import UserRegister, UserVerify, UserCredentials
 from backend.services.user import UserService
 from backend.core.config import settings, logger
 
@@ -17,7 +17,7 @@ async def verify_user(data: UserVerify, service: UserService = Depends(UserDepen
     return await service.verify_email(data)
 
 @router.post("/auth")
-async def auth_user(data: UserAuth, response: Response, service: UserService = Depends(UserDependencies.get_user_service)):
+async def auth_user(data: UserCredentials, response: Response, service: UserService = Depends(UserDependencies.get_user_service)):
     result = await service.auth(data)
     response.set_cookie(
         key="session_id",
