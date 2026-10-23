@@ -35,32 +35,10 @@ docker compose up -d
 
 ---
 ### Backend
-#### Способ с установкой зависимостей через uv
-```bash
-uv sync
-```
 
-#### Способ через стандартный Python
-```bash
-python -m venv .venv
-source ./.venv/bin/activate
-pip install -r requirements.txt
-```
+Это экспериментальная ветка. Скоро появится способ
+
 ---
-### Frontend
-#### Установка зависимостей для frontend
-```bash
-cd frontend
-npm ci
-```
----
-### Запуск
-```bash
-npm run dev
-uv run uvicorn backend:app --reload # При установке через uv
-uvicorn backend:app --reload # При обычной установке
-# В разных терминалах
-```
 
 ## 🧩 Архитектура
 
