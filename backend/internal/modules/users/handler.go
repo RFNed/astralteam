@@ -1,16 +1,19 @@
 package users
 
 import (
-	"astral-core/internal/httpx"
+	"astral-core/internal/platform/httpx"
 	"database/sql"
 	"errors"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/redis/go-redis/v9"
 )
 
 type Handler struct {
-	DB *sql.DB
+	DB    *sql.DB
+	Redis *redis.Client
 }
 
 func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
@@ -22,9 +25,7 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-
 	var user User
-
 	err = h.DB.QueryRowContext(
 		r.Context(),
 		"SELECT id, username FROM users WHERE id = ?",
@@ -53,4 +54,8 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
 		Message: "Founded",
 		Data:    user,
 	})
+}
+
+func (h *Handler) RegisterUser(w http.ResponseWriter, r *http.Request) {
+	return
 }

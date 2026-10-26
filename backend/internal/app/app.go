@@ -2,9 +2,10 @@ package app
 
 import (
 	"astral-core/internal/config"
-	"astral-core/internal/database"
-	"astral-core/internal/httpx"
-	"astral-core/internal/users"
+	"astral-core/internal/modules/users"
+	"astral-core/internal/platform/cache"
+	"astral-core/internal/platform/database"
+	"astral-core/internal/platform/httpx"
 	"context"
 	"database/sql"
 	"errors"
@@ -28,24 +29,26 @@ func New(cfg config.Config) (*App, error) {
 		return nil, err
 	}
 
-	redisClient, err := database.NewRedis(cfg.Redis)
+	redisClient, err := cache.NewRedis(cfg.Redis)
 	if err != nil {
 		mysqlDB.Close()
 		return nil, err
 	}
 
 	usersHandler := &users.Handler{
-		DB: mysqlDB,
+		DB:    mysqlDB,
+		Redis: redisClient,
 	}
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("GET /ping", func(w http.ResponseWriter, r *http.Request) {
 		httpx.JSON(w, http.StatusOK, httpx.Response{
-			Code:    "SUCCESS",
-			Message: "Astral API OK",
+			Code:    "PONG",
+			Message: "ping - pong",
 		})
 	})
+
 	mux.HandleFunc("GET /users/{id}", usersHandler.GetUser)
 
 	server := &http.Server{
