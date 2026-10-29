@@ -5,10 +5,14 @@ import (
 	"net/http"
 )
 
-type Response struct {
+type Details struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
 	Data    any    `json:"data,omitempty"`
+}
+
+type Response struct {
+	Details Details `json:"detail"`
 }
 
 func JSON(w http.ResponseWriter, status int, response Response) {

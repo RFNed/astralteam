@@ -2,7 +2,7 @@ package app
 
 import (
 	"astral-core/internal/config"
-	"astral-core/internal/modules/users"
+	"astral-core/internal/modules/user"
 	"astral-core/internal/platform/cache"
 	"astral-core/internal/platform/database"
 	"astral-core/internal/platform/httpx"
@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/redis/go-redis/v9"
+	"github.com/rs/cors"
 )
 
 type App struct {
@@ -35,7 +36,7 @@ func New(cfg config.Config) (*App, error) {
 		return nil, err
 	}
 
-	usersHandler := &users.Handler{
+	usersHandler := &user.Handler{
 		DB:    mysqlDB,
 		Redis: redisClient,
 	}
@@ -44,16 +45,29 @@ func New(cfg config.Config) (*App, error) {
 
 	mux.HandleFunc("GET /ping", func(w http.ResponseWriter, r *http.Request) {
 		httpx.JSON(w, http.StatusOK, httpx.Response{
-			Code:    "PONG",
-			Message: "ping - pong",
+			Details: httpx.Details{
+				Code:    "PONG",
+				Message: "ping - pong",
+			},
 		})
 	})
 
 	mux.HandleFunc("GET /users/{id}", usersHandler.GetUser)
+	mux.HandleFunc("POST /user/register", usersHandler.RegisterUser)
+
+	c := cors.New(cors.Options{
+		AllowedOrigins:   cfg.URL.CORS_ORIGINS,
+		AllowedMethods:   []string{"GET", "POST"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+		MaxAge:           300,
+	})
+
+	handler := c.Handler(mux)
 
 	server := &http.Server{
 		Addr:              ":8000",
-		Handler:           mux,
+		Handler:           handler,
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 

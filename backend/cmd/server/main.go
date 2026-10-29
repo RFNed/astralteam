@@ -6,6 +6,10 @@ import (
 	"log"
 )
 
+// @title Astral Team Core
+// @version 0.8.0
+// @description Backend API
+// @BasePath /
 func main() {
 	log.Println("boot ...")
 	cfg, err := config.Load()
