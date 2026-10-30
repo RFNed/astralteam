@@ -36,13 +36,7 @@ func New(cfg config.Config) (*App, error) {
 		return nil, err
 	}
 
-	usersHandler := &user.Handler{
-		DB:    mysqlDB,
-		Redis: redisClient,
-	}
-
 	mux := http.NewServeMux()
-
 	mux.HandleFunc("GET /ping", func(w http.ResponseWriter, r *http.Request) {
 		httpx.JSON(w, http.StatusOK, httpx.Response{
 			Details: httpx.Details{
@@ -51,9 +45,11 @@ func New(cfg config.Config) (*App, error) {
 			},
 		})
 	})
-
-	mux.HandleFunc("GET /users/{id}", usersHandler.GetUser)
-	mux.HandleFunc("POST /user/register", usersHandler.RegisterUser)
+	mux.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets/"))))
+	mux.Handle("GET /uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir("./storage/uploads/"))))
+	// Modules
+	user.RegisterModule(mux, mysqlDB, redisClient)
+	//
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   cfg.URL.CORS_ORIGINS,

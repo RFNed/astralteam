@@ -17,7 +17,7 @@ frontend/dist
 frontend/dist-ssr
 frontend/*.local
 
-Backend/Resource/download/installer/astralinstaller.exe
+backend/storage/uploads/avatars/*
 
 **/.vscode/*
 !**/.vscode/extensions.json

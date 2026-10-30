@@ -1,10 +1,7 @@
 package user
 
 import (
-	"database/sql"
-	"net/http"
-
-	"github.com/redis/go-redis/v9"
+	"context"
 )
 
 type Service struct {
@@ -17,7 +14,7 @@ func NewService(repo *Repository) *Service {
 	}
 }
 
-func RegisterUser(w http.ResponseWriter, user *UserRegister, db *sql.DB, redis *redis.Client) bool {
-	// Todo RegisterUser
-	return false
+func (s *Service) RegisterUser(ctx context.Context, user *UserRegister) error {
+
+	return nil
 }
