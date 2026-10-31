@@ -17,6 +17,7 @@ frontend/dist
 frontend/dist-ssr
 frontend/*.local
 
+!backend/storage/uploads/avatars/.gitkeep
 backend/storage/uploads/avatars/*
 
 **/.vscode/*
