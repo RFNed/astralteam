@@ -11,7 +11,7 @@ import (
 // @description Backend API
 // @BasePath /
 func main() {
-	log.Println("boot ...")
+	log.Println(" -- astral-core is inited ...")
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal(err)

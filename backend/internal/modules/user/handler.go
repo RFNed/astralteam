@@ -37,11 +37,36 @@ func (h *Handler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.service.RegisterUser(r.Context(), &req); err != nil {
-		httpx.JSON(w, http.StatusBadRequest, httpx.Response{
-			Details: httpx.Details{
-				Code:    "REG_FAILED",
-				Message: err.Error(),
-			},
-		})
+		switch err.Error() {
+		case "require data":
+			httpx.JSON(w, http.StatusBadRequest, httpx.Response{
+				Details: httpx.Details{
+					Code:    "REGDATA_REQUIRED",
+					Message: "Need to regdata!",
+				},
+			})
+		case "invalid email":
+			httpx.JSON(w, http.StatusBadRequest, httpx.Response{
+				Details: httpx.Details{
+					Code:    "INVALID_EMAIL",
+					Message: "Sorry, invalid email!",
+				},
+			})
+		case "already exists":
+			httpx.JSON(w, http.StatusConflict, httpx.Response{
+				Details: httpx.Details{
+					Code:    "ACCOUNT_ALREADY_EXISTS",
+					Message: "Account already is exists!",
+				},
+			})
+		default:
+			httpx.JSON(w, http.StatusInternalServerError, httpx.Response{
+				Details: httpx.Details{
+					Code:    "INTERNAL_ERROR",
+					Message: "Error Internal",
+				},
+			})
+		}
+		return
 	}
 }
